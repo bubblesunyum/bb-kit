@@ -78,6 +78,10 @@ most of them fail silently — the code renders, it just renders wrong:
   particular stay server-renderable.
 - **Reading window or screen size**, at module load or during render. Use CSS
   and container queries.
+- **A one-off transition written inline.** Animation is a capability here — a
+  hook or a wrapping component with good defaults — not a `transition-*` class
+  dropped into whichever component needed it first. Also flag motion that
+  carries no information, and any moving thing with no reduced-motion path.
 - **A component without a story, or an interactive component without a states
   story.** A story forcing `focus` rather than `focus-visible` is the same
   defect.

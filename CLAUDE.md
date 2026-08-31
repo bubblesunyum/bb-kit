@@ -168,12 +168,32 @@ ring on every mouse click.
 ## Motion
 
 Fast 120ms, normal 200ms, easing `cubic-bezier(0.2, 0, 0, 1)`. Anything that
-moves holds still for readers who asked for reduced motion, through a CSS
-media query rather than a JS hook — a hook would force the component into the
-browser.
+moves holds still for readers who asked for reduced motion, through a CSS media
+query rather than a JS hook — a hook would force the component into the browser
+and off the server-renderable list.
 
-Nothing in v0 animates except `Skeleton`. Wider animation taste is worth
-settling when there is something to animate.
+**Animation is a capability, not a decoration**, and this kit will ship a lot of
+it. So build it the way everything else here is built: hooks and wrapping
+components with beautiful defaults, overridable from a terse call site. A
+one-off transition written inline in a component is the thing to extract.
+
+**Prefer an animated transition over a jump between states.** The purpose is
+orientation — show where something came from and where it will go back to, and
+give the eye something to follow. A element that appears fully formed makes the
+reader re-find their place.
+
+**Do not animate everything.** Most motion should be earning its keep by
+keeping the reader oriented. Movement that carries no information is noise, and
+it is the fastest way to make an interface feel slow.
+
+**Then animate a few things purely for delight.** Where an interaction warrants
+it, add a flourish that is surprising and fun. These have to be worth it:
+fluid, springy, buttery smooth. A half-committed flourish is worse than none —
+the same collapse-or-commit rule the design reviewer applies to geometry.
+
+v0 has almost nothing that moves — `Skeleton`, and whatever `Badge` and
+`Button` do on press. The values above are settled; the components that will
+use them mostly arrive later.
 
 ## Commits
 
