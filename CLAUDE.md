@@ -117,7 +117,8 @@ constraint, a platform gotcha. Never restate the code.
 
 Derive from the source of truth rather than duplicating:
 `type FooProps = Parameters<typeof Foo>[0]`. Use `import type` for type-only
-imports. Filter inputs are `readonly`. See plan §6 for the exact return types.
+imports. Filter inputs are `readonly`; returns are plain arrays. See plan §6
+for the exact signatures.
 
 ## Theming
 

@@ -76,7 +76,7 @@ There is a real example of what happens without this rule. The old `List` ([List
 
 When a component has a few meaningful forms, ship each form as its own named component wrapping the base one. So `PrimaryButton`, `LinkButton`, `GhostButton` rather than one component with a prop. So `H2` and `Span` rather than a prop choosing the element.
 
-The base component still exists and still takes the prop. **Call that prop `variant`** — the same name every other kit uses. An agent that writes `variant="ghost"` from habit should get the right thing rather than an ignored attribute. Named wrappers are what people reach for; `variant` is the escape hatch underneath. **Every allowed value and default is written down in §3.8** — an undocumented variant prop would be worse than none.
+The base component still exists and still takes the prop. **Call that prop `variant`** — the same name every other kit uses. An agent that writes `variant="ghost"` from habit should get the right thing rather than an ignored attribute. Named wrappers are what people reach for; `variant` is the escape hatch underneath. **Every allowed value and default is written down in §3.5** — an undocumented variant prop would be worse than none.
 
 **In development, warn on unknown props.** A component that receives `variant="soft"` when it has no such value should say so in the console. Otherwise a wrong guess lands as an ignored HTML attribute and looks like it worked.
 
@@ -606,7 +606,7 @@ type Accessors<T> = {
   getText?: (item: T) => string
 }
 
-filterItems<T>(items, criteria, accessors): readonly T[]
+filterItems<T>(items, criteria, accessors): T[]
 collectTags<T>(items, accessors): { tag: string; count: number }[]
 collectTagsWithSelection<T>(items, criteria, accessors): { tag: string; count: number; selected: boolean; disabled: boolean }[]
 toggleTag(selected: readonly string[], tag: string): string[]   // returns a new array
