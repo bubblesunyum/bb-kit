@@ -66,6 +66,12 @@ nobody looked at is the defect.
   intent-to-add entry left in the index gets committed in full by the next
   `git commit -a`, which would ride an untracked scratch file into someone
   else's commit.
+- **Check the packet's file list before you spawn anyone.** `review.sh` selects
+  by a `SCOPE` glob list, so a file type nobody added is silently missing and
+  the reviewers report clean on a change they never saw. Compare the packet's
+  header against `git status` when the change touches a kind of file the
+  project hasn't reviewed before, and widen `SCOPE` rather than explaining the
+  gap to each reviewer.
 - **Cheap models do the reading.** Taste checking is pattern matching against a
   written standard — Haiku is good at it and costs a fraction. Correctness gets
   Sonnet because it needs to reason about concurrency and lifecycle. Neither
