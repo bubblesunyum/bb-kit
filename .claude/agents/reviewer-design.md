@@ -78,21 +78,19 @@ Work through the captures one at a time, and for each one ask:
   is drift, even when it looks fine alone. Compare against the other captures
   and against what the app already does.
 
-  <!-- The look: a tinted near-grey page with white cards, one green brand hue
+  The look: a tinted near-grey page with white cards, one green brand hue
   (forest teal, around hue 170) and greys built at that same hue so they sit
   with it. Corners 0.5rem base. Shadows are faint — `shadow-xs` on a raised
   card — because the tinted page is already doing the separating. Spacing runs
-  on Tailwind's scale with an 8px rhythm; prefer even steps. Focus is a 2px
-  outline in its own ring color, offset 2px, never a filled halo. Drift here
-  looks like: a pure-white page, a grey that has no green in it, a second
-  corner radius, a heavier shadow, or an accent that is not the primary. -->
-
-  <!-- One extra thing this kit needs that most apps do not: **captures come in
-  four.** Two palettes across two modes. The second palette is deliberately
-  clashing and inverted — its light mode has a dark page — and it exists to
-  catch a component that assumed the page was pale or the primary was dark. A
-  change to anything visual that shows only one combination is unverified, and
-  saying so is a finding. -->
+  on Tailwind's scale with an 8px rhythm. Focus is a 2px outline in its own
+  ring color, offset 2px, never a filled halo. Drift here looks like: a pure
+  white page, a grey with no green in it, a second corner radius, a heavier
+  shadow, or an accent that is not the primary.
+- **All four combinations.** This kit has two palettes across two modes, and
+  the second palette is deliberately clashing and inverted — its light mode has
+  a *dark* page. It exists to catch a component that assumed the page was pale
+  or the primary was dark. Captures showing only one combination leave a
+  visual change unverified, and saying so is a finding.
 - **Alignment and rhythm.** Labels and values on a consistent grid, equal
   spacing between sibling rows, things that should be left-aligned actually
   left-aligned, no lone element hanging off a different margin.

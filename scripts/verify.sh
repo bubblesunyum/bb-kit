@@ -87,10 +87,10 @@ else
   has_script() { node -e "process.exit(require('./package.json').scripts?.['$1']?0:1)" 2>/dev/null; }
 
   has_script typecheck && step "typecheck" npm run typecheck
-  step "build" npm run build
+  has_script build && step "build" npm run build
 
   if [ "$mode" != "--quick" ]; then
-    step "tests" npm test -- --run
+    has_script test && step "tests" npm test -- --run
 
     # "ok" alone can't tell a green suite from one that ran nothing. Vitest
     # prints "Tests  N passed"; repoint this if the runner changes.

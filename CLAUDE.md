@@ -84,12 +84,14 @@ explicitly and destructure them, so nothing unknown reaches the DOM. Rule 4
 covers most of what shorthand was for.
 
 **No `loading` prop on `Text` or the stacks.** Callers place `Skeleton`
-themselves. `List` is the exception and owns its loading state, because it
-takes data and so can tell an empty list from a child that renders nothing.
+themselves, because only the caller knows the height the real content will
+take. `List` owns both its loading and empty states, because it takes data — a
+stack takes arbitrary children and cannot tell an empty list from one child
+that renders nothing.
 
-**No spacing tokens of our own.** Use Tailwind's scale and only that. A second
-scale means an agent cannot tell whether to write `gap-2` or `gap-x1`. Keep the
-8px rhythm as a habit — prefer even steps.
+**No spacing tokens of our own.** Use Tailwind's scale and only that, and never
+export a second set. Two scales means an agent cannot tell which one a given
+call site wants. Keep the 8px rhythm as a habit — prefer even steps.
 
 **Raw colors stay private.** Only role names are exported. A raw palette that
 is also reachable by name is how a color system sprawls, and it is what Rule 7
@@ -115,7 +117,7 @@ constraint, a platform gotcha. Never restate the code.
 
 Derive from the source of truth rather than duplicating:
 `type FooProps = Parameters<typeof Foo>[0]`. Use `import type` for type-only
-imports. Filter inputs are `readonly`; returns are plain arrays.
+imports. Filter inputs are `readonly`. See plan §6 for the exact return types.
 
 ## Theming
 
@@ -163,15 +165,15 @@ Stories force `focus-visible`, never `focus`. Asking for `focus` shows nothing,
 and the natural wrong fix is to restyle the component to `:focus`, which puts a
 ring on every mouse click.
 
-## Animation
+## Motion
 
-Prefer animated over jumping between states. The point is showing where
-something came from and where it goes back to — give the eye something to
-follow. Do not animate everything. Animate a few things purely for delight,
-and make those worth it: fluid, springy, smooth. Turn animations into
-capabilities — hooks and wrapping components with good defaults and terse
-call sites. Everything that moves holds still for readers who asked for
-reduced motion, via a CSS media query rather than a JS hook.
+Fast 120ms, normal 200ms, easing `cubic-bezier(0.2, 0, 0, 1)`. Anything that
+moves holds still for readers who asked for reduced motion, through a CSS
+media query rather than a JS hook — a hook would force the component into the
+browser.
+
+Nothing in v0 animates except `Skeleton`. Wider animation taste is worth
+settling when there is something to animate.
 
 ## Commits
 

@@ -1,5 +1,7 @@
 <!-- tracks:
   .claude/agents/librarian.md
+  CLAUDE.md
+  harness/seat.md
   opencode.json
   .claude/agents/reviewer-correctness.md
   .claude/agents/reviewer-design.md

@@ -16,8 +16,10 @@ You did not write this code, which is the point: you have no investment in it
 being right.
 
 Read the review packet you were given (a path to a markdown file containing the
-diff). Read changed files in full when you need surrounding context; use Grep to
-find call-sites of anything the change alters. Don't audit code the diff didn't
+diff). `CLAUDE.md` is the standard, and `.opencode/plans/bb-kit-foundation-r7.md`
+is the spec — the traps below cite its sections, so open it when a finding turns
+on one. Read changed files in full when you need surrounding context; use Grep
+to find call-sites of anything the change alters. Don't audit code the diff didn't
 touch except to understand a caller or an invariant.
 
 **The bar for reporting: you can state a concrete failure.** Specific inputs or
@@ -27,18 +29,16 @@ report it.
 
 Where code like this generally goes wrong:
 
-- **Concurrency.** Work touching shared state from the wrong thread or context,
-  captures that outlive what they captured, tasks whose lifetime exceeds the
-  thing that spawned them.
 - **Lifecycle and state.** State held at the wrong level, values captured stale
-  in a closure, setup work that re-runs or never runs, retain cycles.
-- **Optionals and boundaries.** Force unwraps, unchecked indexing, and anything
-  parsing input that arrives from outside — it will arrive malformed and the
-  parser has to survive it.
+  in a closure, an effect with a wrong or missing dependency array, setup work
+  that re-runs on every render or never runs at all.
+- **Boundaries.** Unchecked indexing, and anything parsing input that arrives
+  from outside — it will arrive malformed and the parser has to survive it.
 - **Async correctness.** Missing awaits, unhandled cancellation, races between a
   refresh and a user action, work that assumes ordering it doesn't have.
-- **The build itself.** Whatever step a new source file needs before it is
-  actually in the binary. If the diff adds files, check that.
+- **The build itself.** A new file that nothing exports or imports, a registry
+  entry that names a path the file does not live at. If the diff adds files,
+  check they are actually reachable.
 - **Tests.** Logic that changed behavior without a test, and tests asserting
   implementation detail rather than what a user would observe.
 
@@ -51,10 +51,10 @@ a specific trap is worth ten generic ones.
   switching to stylesheet order. A missing `color-scheme: light dark` makes
   every unattributed subtree render light. None of these error; they just come
   out wrong in one of four combinations.
-- **A palette that claims to pass §4.6 and does not.** r5 shipped a border at
-  1.226 against a 1.25 floor while asserting all-pass. Numbers must come from
-  running the check function, never from the table. Lowering a threshold to
-  make a color pass is the bug, not the fix.
+- **A palette that claims to pass §4.6 and does not.** Contrast numbers must
+  come from running the check function, never transcribed from a table. A
+  near-miss is the likely shape — a border a hundredth under its floor.
+  Lowering a threshold to make a color pass is the bug, not the fix.
 - **Contrast checked in one mode only.** Every pair has to clear in both modes
   and both palettes. The clashing palette inverts — light mode has a *dark*
   page — so anything assuming "light mode means pale background" breaks there
@@ -73,7 +73,7 @@ a specific trap is worth ten generic ones.
   duplicate tags on one item count once. Each of these is invisible by eye.
 - **`List` state precedence:** error before loading, loading before empty,
   empty only when `items` is empty — and the header stays and the height holds
-  while loading. The old `List` returned early and dropped both.
+  while loading. An early return in the loading branch drops both.
 - **Stale generated files.** The token CSS is generated from the palette
   TypeScript. Edit the palette, forget the build, and everything compiles with
   the old colors.

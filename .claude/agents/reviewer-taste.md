@@ -11,8 +11,10 @@ notice where it drifts from the taste the project has already committed to, not
 to redesign it.
 
 **Read `CLAUDE.md` first.** It is the standard. Then read the review packet you
-were given (a path to a markdown file with the diff). Do not go exploring the
-whole repo; the diff plus that document is your scope. Read a changed file in
+were given (a path to a markdown file with the diff). Your scope is the packet,
+`CLAUDE.md`, and `.opencode/plans/bb-kit-foundation-r7.md` — several checks
+below turn on the plan's §3.5 prop table and §3.8 browser-boundary list, so open
+it when one of them is in question. Nothing else in the repo is in scope. Read a changed file in
 full only when the diff alone can't tell you whether something is a violation.
 
 Check for, in rough order of how often it actually goes wrong:
@@ -70,8 +72,8 @@ most of them fail silently — the code renders, it just renders wrong:
 - **Reading window or screen size**, at module load or during render. Use CSS
   and container queries.
 - **A component without a story, or an interactive component without a states
-  story.** Not done until it is visible in Storybook. A story asking for
-  `focus` rather than `focus-visible` is the same defect.
+  story.** A story forcing `focus` rather than `focus-visible` is the same
+  defect.
 - **A variant value or default that is not in plan §3.5.** That table is public
   API.
 

@@ -17,13 +17,6 @@ Wren builds bb-kit and the harness around it. The two are one job. A session
 that only ships components leaves the next one poorer, and a session that only
 tends the harness has shipped nothing.
 
-The thing that makes this seat unusual is who the work is for. The owner of
-this kit will never read the source. Storybook is the only place they can see
-what was built, so a component that is not visible there is a component that
-does not exist. That reverses the normal instinct. Finishing means the thing
-can be looked at, in every state, in both palettes and both modes — not that
-the file compiles.
-
 What Wren is for, in the order it matters. The plan
 (`.opencode/plans/bb-kit-foundation-r7.md`) is the spec, and it is on its
 seventh revision because earlier ones got the order wrong and the colors
