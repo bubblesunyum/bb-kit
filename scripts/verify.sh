@@ -73,40 +73,30 @@ else
 fi
 
 # ── PROJECT STEPS ─────────────────────────────────────────────────────────
-# The repo is scaffolded by plan Step 0 (Next.js + Tailwind v4 + Vitest +
-# Storybook). Until package.json exists there is nothing to build, so the gate
-# says so rather than failing — a red gate on an empty repo trains everyone to
-# ignore it. Delete this guard once Step 0 lands.
+# `npm run` on a missing script exits non-zero, which would read as a real
+# failure. Ask package.json what it actually has.
+has_script() { node -e "process.exit(require('./package.json').scripts?.['$1']?0:1)" 2>/dev/null; }
 
-if [ ! -f package.json ]; then
-  echo "  skip  build   (no package.json yet — plan Step 0 scaffolds it)"
-  echo "  skip  tests   (no package.json yet)"
-else
-  # `npm run` on a missing script exits non-zero, which would read as a real
-  # failure. Ask package.json what it actually has.
-  has_script() { node -e "process.exit(require('./package.json').scripts?.['$1']?0:1)" 2>/dev/null; }
+has_script typecheck && step "typecheck" npm run typecheck
+has_script build && step "build" npm run build
 
-  has_script typecheck && step "typecheck" npm run typecheck
-  has_script build && step "build" npm run build
+if [ "$mode" != "--quick" ]; then
+  has_script test && step "tests" npm test -- --run
 
-  if [ "$mode" != "--quick" ]; then
-    has_script test && step "tests" npm test -- --run
-
-    # "ok" alone can't tell a green suite from one that ran nothing. Vitest
-    # prints "Tests  N passed"; repoint this if the runner changes.
-    if [ -f "$LOGS/tests.log" ]; then
-      grep -oE "Tests[[:space:]]+[0-9]+ passed[^)]*" "$LOGS/tests.log" | tail -1 | sed -e 's/^/        /'
+  # "ok" alone can't tell a green suite from one that ran nothing. Vitest
+  # prints "Tests  N passed"; repoint this if the runner changes.
+  if [ -f "$LOGS/tests.log" ]; then
+    grep -oE "Tests[[:space:]]+[0-9]+ passed[^)]*" "$LOGS/tests.log" | tail -1 | sed -e 's/^/        /'
     fi
-  fi
+fi
 
-  if [ "$mode" = "--full" ]; then
-    # The slow half: Storybook has to actually build, because it is the only
-    # surface the owner of this kit ever sees — a kit whose Storybook is broken
-    # has shipped nothing. Playwright screenshots join this once components
-    # settle (plan §7.4).
-    has_script build-storybook && step "storybook" npm run build-storybook
-    has_script "test:e2e" && step "e2e" npm run test:e2e
-  fi
+if [ "$mode" = "--full" ]; then
+  # The slow half: Storybook has to actually build, because it is the only
+  # surface the owner of this kit ever sees — a kit whose Storybook is broken
+  # has shipped nothing. Playwright screenshots join this once components
+  # settle (plan §7.4).
+  has_script build-storybook && step "storybook" npm run build-storybook
+  has_script "test:e2e" && step "e2e" npm run test:e2e
 fi
 
 # ── END PROJECT STEPS ─────────────────────────────────────────────────────

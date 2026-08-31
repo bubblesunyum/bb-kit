@@ -46,7 +46,7 @@ fi
 # CLAUDE.md or a skill that quietly stopped being true is a defect the reviewers
 # should see, and a suffix-only scope is also how a file with no extension at all
 # stays unreviewable — list such files by path.
-SCOPE=('*.py' '*.sh' '*.md' '*.html' '*.json' '*.ts' '*.tsx' '*.css'
+SCOPE=('*.py' '*.sh' '*.md' '*.html' '*.json' '*.ts' '*.tsx' '*.mts' '*.css'
        '*.js' '*.mjs' 'scripts/hooks/*' '.gitignore' 'LICENSE'
        ':(exclude).beads/*' ':(exclude)dashboard/vendor/*'
        ':(exclude)package-lock.json')
