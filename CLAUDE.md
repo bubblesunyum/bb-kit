@@ -13,8 +13,10 @@ no `Post` type.
 It is the spec. r7 replaces r6 and everything before it; ignore the older
 files in that folder. Where this file and the plan disagree, the plan wins.
 
-**The old kit is `../bubble-kit`** (React Native). Read it for reference only.
-Its bugs are catalogued in plan §8 — do not copy them.
+There is a predecessor kit at `../bubble-kit`. **We are not working on it, and
+you should not need to read it.** Everything from it worth keeping is already
+in this file. Plan §8 catalogues what it got wrong, if you ever need the
+history.
 
 ## The seven rules
 
@@ -75,30 +77,27 @@ component body should read as a short list of what it needs.
 **File layout for a file of any size:** public API first, private helpers and
 subcomponents next, static types and constants at the bottom.
 
-## What the old kit did that we do not
+## Props and state
 
-The old CLAUDE.md is good on composition and hooks. Four of its habits are
-explicitly reversed here, and an agent that has read it will reach for them:
+**No boolean shorthand style props.** Not `<Text sm accent bold>`. List props
+explicitly and destructure them, so nothing unknown reaches the DOM. Rule 4
+covers most of what shorthand was for.
 
-- **No boolean shorthand style props.** `<Text sm accent bold>` is out. Those
-  spread unknown props onto the DOM (`gray_400="true"`), and the old `Text`
-  already shipped a real bug from it — `light` was both a weight and a color,
-  so `<Text light>` rendered white on white. List props explicitly and
-  destructure them. Rule 4 covers most of the need.
-- **No `loading` prop on `Text` or the stacks.** Both were broken in the old
-  kit — wrong skeleton height, and children swapped for one thin bar. Callers
-  place `Skeleton` themselves. `List` still owns its loading state, because it
-  takes data and can tell empty from empty.
-- **No spacing atoms.** No `x1` / `x2` tokens. Use Tailwind's scale and only
-  that; a second spacing system means an agent cannot tell whether to write
-  `gap-2` or `gap-x1`. The 8px rhythm survives as a habit — prefer even steps.
-- **Raw colors stay private.** The old kit spread the whole raw palette into
-  the semantic layer, so every raw color was also a semantic name. That is the
-  sprawl Rule 7 exists to prevent.
+**No `loading` prop on `Text` or the stacks.** Callers place `Skeleton`
+themselves. `List` is the exception and owns its loading state, because it
+takes data and so can tell an empty list from a child that renders nothing.
 
-**Never read the screen size**, at load or during render. The old `Card` read
-it at module load, which crashes during server rendering; `List` read it inside
-render, which never updates on resize. Use CSS and container queries.
+**No spacing tokens of our own.** Use Tailwind's scale and only that. A second
+scale means an agent cannot tell whether to write `gap-2` or `gap-x1`. Keep the
+8px rhythm as a habit — prefer even steps.
+
+**Raw colors stay private.** Only role names are exported. A raw palette that
+is also reachable by name is how a color system sprawls, and it is what Rule 7
+exists to prevent.
+
+**Never read the screen size**, at module load or during render. Reading it at
+load crashes server rendering; reading it in render never updates on resize and
+disagrees between server and browser. Use CSS and container queries.
 
 ## Naming
 

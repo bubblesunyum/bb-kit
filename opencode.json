@@ -1,4 +1,22 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["AGENTS.md", "CLAUDE.md"]
+  "instructions": ["AGENTS.md", "CLAUDE.md"],
+  "command": {
+    "brief": {
+      "description": "the seat, the last session's note, the ready work, the known traps",
+      "template": "Run `scripts/brief.sh` and read what it prints. That is your orientation for this session — the seat you are sitting in, the ledger's current state, and anything the last session left behind. opencode has no session-start hook, so this does not run on its own; that is why this command exists."
+    },
+    "verify": {
+      "description": "the gate — build and tests behind one exit code",
+      "template": "Run `scripts/verify.sh`. Report the result. If a step fails, read the full log it names rather than re-running the underlying build command yourself — the gate exists so proving the work costs one line of context instead of ten thousand."
+    },
+    "review": {
+      "description": "the standing review pass — taste, correctness, and design",
+      "template": "Run `scripts/review.sh` to build the review packet, then spawn `reviewer-taste` and `reviewer-correctness` against the path it prints, plus `reviewer-design` if anything on screen moved. Fix what is real, file the rest as beads, and say plainly what you left and why."
+    },
+    "ready": {
+      "description": "claimable work, nothing blocking it",
+      "template": "Run `bd ready` and show me what is claimable. If I pick one, claim it with `bd update <id> --claim` before you start implementing."
+    }
+  }
 }

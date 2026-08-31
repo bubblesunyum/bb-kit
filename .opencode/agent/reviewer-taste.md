@@ -57,8 +57,8 @@ most of them fail silently — the code renders, it just renders wrong:
   carry both modes through `light-dark()`.
 - **A structural on/off prop.** A flag that adds or removes a part of a
   component — `noHeader`, `hideMedia`, `withFooter`. State props (loading,
-  selected, disabled) are fine; structural ones are Rule 2, and the old kit's
-  `List` grew to eleven props this way.
+  selected, disabled) are fine; structural ones are Rule 2. This is the prop
+  category that grows without limit if it is allowed at all.
 - **A negative prop name**, or a prop that only switches a style the caller
   could pass through `className`. `variant` is the one deliberate exception.
 - **Classes concatenated rather than merged.** Every component combines its own
@@ -68,8 +68,8 @@ most of them fail silently — the code renders, it just renders wrong:
   part. Both are Rule 6, and without them the only way to restyle something is
   a new prop.
 - **Boolean shorthand style props, or props spread onto the DOM after a lookup
-  table.** That is the old kit's pattern and it leaked `gray_400="true"` into
-  the markup. List props explicitly and destructure them.
+  table.** That leaks invalid attributes into the DOM — `gray_400="true"` and
+  the like. List props explicitly and destructure them.
 - **A `'use client'` that did not need to be there.** Plan §3.8 lists exactly
   what runs in the browser. Marking something browser-only is silent — it still
   works, just slower, with nothing to flag it. `Button` and `Badge` in

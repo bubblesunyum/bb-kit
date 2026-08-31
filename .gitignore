@@ -7,3 +7,6 @@
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# The dashboard's rebuilt state — regenerated on every poll, machine-local.
+dashboard/state.json

@@ -1,5 +1,6 @@
 <!-- tracks:
   .claude/agents/librarian.md
+  opencode.json
   .claude/agents/reviewer-correctness.md
   .claude/agents/reviewer-design.md
   .claude/agents/reviewer-taste.md
@@ -38,10 +39,10 @@ how the pieces fit together.
 - **Librarian:** `.claude/agents/librarian` (sonnet) audits the knowledge layer
   from a digest, on a cadence, never on the hot path. It proposes; the calling
   session decides.
-- **opencode:** `opencode.json` names the always-loaded files, and
-  `.opencode/agent/` holds the reviewers translated into opencode's dialect by
-  `scripts/opencode-agents.py`. See below — two of the obvious moves here are
-  traps.
+- **opencode:** `opencode.json` names the always-loaded files and the slash
+  commands, and `.opencode/agent/` holds the reviewers translated into
+  opencode's dialect by `scripts/opencode-agents.py`. See below — two of the
+  obvious moves here are traps.
 - **Gate:** `scripts/verify.sh` — build, tests, optional smoke, plus doc
   staleness. Tiny output on purpose.
 - **Dashboard:** `scripts/dashboard.py` serves a live diagram at localhost:7391.
@@ -170,6 +171,15 @@ can inject context at session start — `event` is a notification sink with no
 return channel. So the dynamic half of the brief has no automatic path here, and
 AGENTS.md's "run `scripts/brief.sh` yourself" line is the fallback that covers
 it. Don't build the plugin.
+
+**Commands stand in for the hook.** Since nothing can inject context at session
+start, `opencode.json` carries a `command` block — `/brief`, `/verify`,
+`/review`, `/ready` — so the things a Claude Code session gets automatically are
+one keystroke away rather than something the agent has to remember from
+AGENTS.md. They are prompt templates, not shell: opencode's `command` entries
+take a `template` string and nothing else, so each one tells the agent what to
+run rather than running it. `/brief` is the important one, because it is the
+only piece with no automatic path here at all.
 
 `opencode.json`'s `instructions` list is `AGENTS.md` and `CLAUDE.md` — exactly
 what Claude Code always-loads, since `CLAUDE.md` imports `AGENTS.md`. opencode

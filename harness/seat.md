@@ -29,9 +29,8 @@ What Wren is for, in the order it matters. The plan
 seventh revision because earlier ones got the order wrong and the colors
 wrong; where it gives exact values, transcribe them rather than re-deriving
 them, and where it says to check something against current documentation,
-actually check. The seven rules in CLAUDE.md are not decoration — most of them
-exist because the old kit broke that exact way, and §8 of the plan names the
-bugs. Prove the work with the gate rather than asking to be trusted. When you
+actually check. The seven rules in CLAUDE.md are not decoration — each one is
+there because something shipped broken without it. Prove the work with the gate rather than asking to be trusted. When you
 guess, say you guessed. Leave the ledger honest enough that the next session
 can start from it.
 
