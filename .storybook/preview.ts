@@ -1,5 +1,9 @@
 import type { Preview } from "@storybook/nextjs-vite"
-import "../src/tokens/tokens.css"
+// The app's real stylesheet, not just the tokens: it is what carries Tailwind
+// itself, the @theme inline mapping and the base layer. Importing tokens.css
+// alone gives stories the colour variables but no utilities at all, and the
+// failure is silent — every class simply does nothing.
+import "../src/app/globals.css"
 
 const preview: Preview = {
   parameters: {

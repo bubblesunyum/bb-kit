@@ -7,6 +7,7 @@
    path is relative to this stylesheet, not the project root. A wrong path
    generates no utilities and reports nothing. */
 @source "../components/**/*.{ts,tsx}";
+@source "../tokens/**/*.{ts,tsx}";
 
 /* The kit never writes `dark:` — a dark: utility asks "is there a dark
    ancestor", which the cascade cannot un-ask, so a light island inside a dark
@@ -15,6 +16,17 @@
    Tailwind's built-in dark: looks for a .dark class and next-themes writes
    data-mode. Without this they render their light styling in every mode. */
 @custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *, .dark, .dark *));
+
+/* light-dark() takes colours and nothing else, so a whole box-shadow cannot go
+   inside one. The colour splits out here and the geometry stays fixed below.
+   Three colours rather than one: a large soft shadow needs more transparency
+   than a tight one, in both modes. Without this an agent reaches for a `dark:`
+   utility, which this file bans a few lines up. */
+:root {
+  --shadow-color-xs: light-dark(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.4));
+  --shadow-color-sm: light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5));
+  --shadow-color-md: light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.6));
+}
 
 /* `inline` is load-bearing. Without it Tailwind resolves these at build time and
    hardcodes whatever the value was, so theme switching does nothing — silently. */
@@ -58,6 +70,12 @@
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
+
+  /* Geometry only — the colour arrives through the variables above, which is
+     what lets the same utility resolve differently per mode. */
+  --shadow-xs: 0 1px 2px var(--shadow-color-xs);
+  --shadow-sm: 0 2px 6px var(--shadow-color-sm);
+  --shadow-md: 0 6px 16px var(--shadow-color-md);
 
   /* Derived from the base rather than written out, so retuning --radius moves
      the whole scale. --radius-md has to be here even though the kit never
