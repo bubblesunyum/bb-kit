@@ -208,7 +208,9 @@ There is no `PlainSurface`: it would be a wrapper around the default, so `<Surfa
 
 The colour prop is called **`tone`**, not `color` — `color` is a real HTML attribute and would collide. Values name roles from §5.1, not colours.
 
-Heading wrappers set a default size and nothing else; `size` still overrides. `H1` → `3xl`, `H2` → `2xl`, `H3` → `xl`, `H4` → `lg`.
+Heading wrappers set a default size and weight; both props still override. `H1` → `3xl`, `H2` → `2xl`, `H3` → `xl`, `H4` → `lg`, all `semibold`.
+
+**Amended while building this** (bbk-rar.1). The line above said "a default size and nothing else". Tailwind's preflight resets heading weight to inherit, so at normal weight an `H4` was indistinguishable from the paragraph beneath it — the acceptance step is looking at it, and it read as broken. Level and size stay independent, which is what the original sentence was protecting.
 
 **Everything else**
 

@@ -20,6 +20,20 @@ export const AWKWARD = {
   missingImage: undefined,
 } as const
 
+// Above TAG_SETS rather than with the other constants at the bottom: TAG_SETS
+// reads it during module evaluation, and a const below would still be in its
+// temporal dead zone.
+const TAG_POOL = [
+  "typescript",
+  "react",
+  "css",
+  "design",
+  "tooling",
+  "accessibility",
+  "performance",
+  "testing",
+]
+
 /** 0, 1, 3 and 24 tags — one row, a short row, and one that has to wrap. */
 export const TAG_SETS = {
   none: [],
@@ -43,14 +57,3 @@ export type AwkwardItem = {
   tags: readonly string[]
   date: string | undefined
 }
-
-const TAG_POOL = [
-  "typescript",
-  "react",
-  "css",
-  "design",
-  "tooling",
-  "accessibility",
-  "performance",
-  "testing",
-]

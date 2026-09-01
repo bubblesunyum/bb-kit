@@ -2,5 +2,20 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "bb-kit",
   "homepage": "https://bb-kit.local",
-  "items": []
+  "items": [
+    {
+      "name": "text",
+      "type": "registry:ui",
+      "title": "Text",
+      "description": "Paragraph text and the wrappers that pick the element for you: H1-H4, Span, and Label. Size, tone, weight and align are props; tone names a role (default, quiet, primary, danger, on-primary, on-danger) rather than a colour, so it follows the palette and mode. Heading level and size are independent, so the semantically correct level never forces a look. No loading state - place a Skeleton yourself, at the height the real text will take.",
+      "files": [
+        {
+          "path": "src/components/text.tsx",
+          "type": "registry:ui",
+          "target": "components/text.tsx"
+        }
+      ],
+      "registryDependencies": []
+    }
+  ]
 }
