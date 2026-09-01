@@ -16,6 +16,20 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "stack",
+      "type": "registry:ui",
+      "title": "Stack",
+      "description": "VStack stacks children downward and HStack lays them out sideways, both with an 8px gap you never have to ask for. Gap takes Tailwind's own spacing scale rather than a second scale; align and justify are ordinary props, and HStack centres across the row because a row is nearly always something small beside a line of text. No loading state and no empty state - a stack takes arbitrary children, so it cannot tell empty from one child that renders nothing; place a Skeleton yourself.",
+      "files": [
+        {
+          "path": "src/components/stack.tsx",
+          "type": "registry:ui",
+          "target": "components/stack.tsx"
+        }
+      ],
+      "registryDependencies": []
     }
   ]
 }
