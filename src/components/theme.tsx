@@ -17,11 +17,12 @@ export function Theme({ palette, mode, className, ...props }: ThemeProps) {
       data-slot="theme"
       data-theme={palette}
       data-mode={mode}
-      /* Switching color-scheme changes what the tokens resolve to; it paints
-         nothing. Without a background here the dark page shows through behind a
-         light island's dark text. Only when a mode is given: an inherited-mode
-         Theme should stay transparent so it sits on whatever is behind it. */
-      className={cn(mode && "bg-page text-text", className)}
+      /* Changing either half changes what the tokens resolve to, and neither
+         paints anything on its own — so a Theme that changes anything has to
+         repaint, or it shows the surface behind it under its own text colour.
+         A palette-only island is the easy one to miss: its text flips to the
+         new palette while the background stays the old one. */
+      className={cn((palette || mode) && "bg-page text-text", className)}
       {...props}
     />
   )
