@@ -6,7 +6,7 @@ import type { Decorator, Preview } from "@storybook/nextjs-vite"
 import "../src/app/globals.css"
 import { Theme } from "../src/components/theme"
 import { MODES } from "../src/tokens/contrast"
-import { palettes, type PaletteName } from "../src/tokens/palette"
+import { DEFAULT_PALETTE, palettes, type PaletteName } from "../src/tokens/palette"
 
 // Derived, so adding a palette adds a toolbar entry and a four-up cell at once.
 const PALETTES = Object.keys(palettes) as PaletteName[]
@@ -20,7 +20,15 @@ const PALETTES = Object.keys(palettes) as PaletteName[]
 const withTheme: Decorator = (Story, { globals }) => {
   if (globals.layout === "four-up") {
     return (
-      <div className="grid grid-cols-2 gap-px bg-border">
+      /* The frame is pinned to the default palette's light border rather than
+         left bare: with no Theme above it, its --border would resolve against
+         :root's `color-scheme: light dark` and so follow whoever's laptop this
+         is, which is the one thing a four-up view must not do. */
+      <Theme
+        palette={DEFAULT_PALETTE}
+        mode="light"
+        className="bg-border grid grid-cols-2 gap-px"
+      >
         {PALETTES.flatMap((palette) =>
           MODES.map((mode) => (
             <Theme key={`${palette}-${mode}`} palette={palette} mode={mode} className="p-4">
@@ -31,7 +39,7 @@ const withTheme: Decorator = (Story, { globals }) => {
             </Theme>
           )),
         )}
-      </div>
+      </Theme>
     )
   }
 
@@ -70,6 +78,13 @@ const preview: Preview = {
     },
   },
   parameters: {
+    // The decorator paints the page background itself, so Storybook's default
+    // padding would leave a frame of the *canvas* colour around every story —
+    // and the canvas takes :root, which is forest light. A clash dark story
+    // inside a forest light frame is exactly the half-and-half look this whole
+    // setup exists to avoid.
+    layout: "fullscreen",
+
     // Viewport is part of core now rather than an addon, and is configured here.
     // The first consumer is a portfolio read on phones; nothing else in the kit
     // would surface a card that breaks at 375.

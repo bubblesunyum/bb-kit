@@ -1,13 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { palettes, ROLES, type PaletteName } from "./palette"
+
+import { cn } from "@/lib/utils"
+import { ROLES } from "./palette"
 
 /**
- * Step 0's proof that the chain works end to end: the generated token CSS
- * reaches the canvas, `data-theme` and `data-mode` select a palette and a mode,
- * and the pseudo-states addon can force a state that no pointer is producing.
+ * Every role, as a swatch. Palette and mode come from the toolbar, and the
+ * four-up layout shows all four combinations at once — this story sets neither,
+ * which is what lets it.
  *
- * Step 2 (bbk-bp6.8) builds the real `/tokens` page, with every §4.6 pair and
- * its measured contrast number. This one only shows that the plumbing is live.
+ * The measured contrast numbers live on /tokens (§7.3) rather than here.
+ * Storybook is where you check that a role *looks* right; the page is where you
+ * check that it clears its threshold.
  */
 const meta: Meta<typeof Swatches> = {
   title: "Tokens/Roles",
@@ -16,60 +19,41 @@ const meta: Meta<typeof Swatches> = {
 
 export default meta
 
-export const Forest: StoryObj<typeof Swatches> = { args: { palette: "forest" } }
-
-export const Clash: StoryObj<typeof Swatches> = { args: { palette: "clash" } }
+export const All: StoryObj<typeof Swatches> = {}
 
 /** Forced, because only one element on a page can hold focus at a time. */
 export const FocusedAndHovered: StoryObj<typeof Swatches> = {
-  args: { palette: "forest" },
   parameters: { pseudo: { hover: "#hover-me", focusVisible: "#focus-me" } },
 }
 
-function Swatches({ palette }: { palette: PaletteName }) {
+function Swatches() {
   return (
-    <div style={{ display: "flex", gap: 24 }}>
-      {MODES.map((mode) => (
-        <div
-          key={mode}
-          data-theme={palette}
-          data-mode={mode}
-          style={{ background: "var(--page)", color: "var(--text)", padding: 24, flex: 1 }}
-        >
-          <p style={{ marginBottom: 16 }}>{mode}</p>
-          {ROLES.map((role) => (
-            <div key={role} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span
-                style={{
-                  width: 32,
-                  height: 32,
-                  background: `var(--${role})`,
-                  border: "1px solid var(--border)",
-                }}
-              />
-              <code>{role}</code>
-              <code style={{ color: "var(--quiet)" }}>{palettes[palette][role][mode]}</code>
-            </div>
-          ))}
-          <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-            <button id="hover-me" type="button" style={BUTTON}>
-              hover
-            </button>
-            <button id="focus-me" type="button" style={BUTTON}>
-              focus-visible
-            </button>
-          </div>
+    <div className="flex flex-col gap-2">
+      {ROLES.map((role) => (
+        <div key={role} className="flex items-center gap-2">
+          <span
+            className="border-border size-8 border"
+            // The one place a raw variable belongs: the subject of the story is
+            // the role itself, so it has to be addressed by name.
+            style={{ background: `var(--${role})` }}
+          />
+          <code>{role}</code>
         </div>
       ))}
+      <div className="mt-4 flex gap-2">
+        <button id="hover-me" type="button" className={BUTTON}>
+          hover
+        </button>
+        <button id="focus-me" type="button" className={BUTTON}>
+          focus-visible
+        </button>
+      </div>
     </div>
   )
 }
 
-const MODES = ["light", "dark"] as const
-
-const BUTTON = {
-  background: "var(--primary)",
-  color: "var(--text-on-primary)",
-  border: "none",
-  padding: "8px 16px",
-}
+const BUTTON = cn(
+  "bg-primary text-on-primary rounded-md px-4 py-2",
+  "hover:bg-highlight hover:text-on-highlight",
+  "focus-visible:outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2",
+)

@@ -6,7 +6,7 @@
  * can assert, so it is not checked here — that is what looking at /tokens is
  * for.
  */
-import { palettes, type Palette, type PaletteName, type Role } from "./palette"
+import { palettes, type Mode, type PaletteName, type Role } from "./palette"
 
 export function checkPalette(name: PaletteName, mode: Mode): Check[] {
   const palette = palettes[name]
@@ -39,7 +39,7 @@ function luminance(hex: string): number {
 
 const channel = (c: number) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4))
 
-export type Mode = "light" | "dark"
+export type { Mode }
 
 export type Check = {
   foreground: Role

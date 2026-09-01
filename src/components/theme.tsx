@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 
 import { cn } from "@/lib/utils"
-import type { PaletteName } from "@/tokens/palette"
+import type { Mode, PaletteName } from "@/tokens/palette"
 
 /**
  * Sets the palette, the mode, or both on a subtree. No JavaScript at all, so it
@@ -32,5 +32,3 @@ type ThemeProps = Omit<ComponentProps<"div">, "mode"> & {
   palette?: PaletteName
   mode?: Mode
 }
-
-type Mode = "light" | "dark"

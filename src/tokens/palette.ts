@@ -53,6 +53,8 @@ export const palettes: Record<PaletteName, Palette> = {
 
 export type PaletteName = "forest" | "clash"
 
+export type Mode = "light" | "dark"
+
 /** One value per role per mode. Every role in §5.1's table, in its order. */
 export type Palette = Record<Role, { light: string; dark: string }>
 

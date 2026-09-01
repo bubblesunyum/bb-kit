@@ -1,18 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
+import { cn } from "@/lib/utils"
 import { Theme } from "./theme"
 
 /**
  * §4.2's verifications, kept as stories rather than run once and thrown away.
  * Every one of them fails silently — a wrong @source path, a frozen token, a
  * half-and-half island — so the only way to know they still hold is to look.
+ * Verification 4, the shadow, lives in Tokens/Shadows.
  *
  * This file living in src/components is itself verification 2: if @source were
  * pointed at the wrong folder these classes would generate nothing at all.
  */
 const meta = {
   component: Theme,
-  parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof Theme>
 
 export default meta
@@ -20,24 +21,29 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
- * Verification 5, the one nothing else renders: a dark page holding a light
- * island holding a clash island. Each level sets only what it changes and
- * inherits the rest, which is the whole reason mode rides on color-scheme
- * instead of a second attribute.
+ * Verification 5, the one nothing else renders: a page holding an island that
+ * overrides only the mode, holding an island that overrides only the palette.
+ * Each level sets one half and inherits the other, which is the whole reason
+ * mode rides on color-scheme instead of a second attribute.
+ *
+ * The outer level takes the toolbar rather than pinning a palette and mode, so
+ * the nesting can be checked from all four starting points — and four-up shows
+ * every one of them at once. Only the two inner overrides are fixed, because
+ * they are the subject.
  */
 export const Nesting: Story = {
-  args: { palette: "forest", mode: "dark" },
+  args: {},
   render: (args) => (
     <Theme {...args} className="p-6">
-      <Label>forest dark — the page</Label>
+      <Label>the page — whatever the toolbar says</Label>
       <Card>A card on the page.</Card>
 
       <Theme mode="light" className="mt-4 rounded-lg p-6">
-        <Label>forest light — an island</Label>
-        <Card>Its own background, or the dark page shows through behind this text.</Card>
+        <Label>an island forcing light, palette inherited</Label>
+        <Card>Its own background, or the page shows through behind this text.</Card>
 
         <Theme palette="clash" className="mt-4 rounded-lg p-6">
-          <Label>clash — an island inside the island, inheriting light</Label>
+          <Label>an island forcing clash, mode inherited from the island above</Label>
           <Card>Palette changed, mode inherited.</Card>
         </Theme>
       </Theme>
@@ -57,27 +63,9 @@ export const OpacityModifier: Story = {
   args: {},
   render: (args) => (
     <Theme {...args} className="flex gap-3 p-6">
-      {["bg-primary", "bg-primary/75", "bg-primary/50", "bg-primary/25"].map((className) => (
-        <div key={className} className={`${className} text-on-primary rounded-md px-4 py-6 text-sm`}>
-          {className}
-        </div>
-      ))}
-    </Theme>
-  ),
-}
-
-/**
- * Verification 4. Tailwind's shadow utilities compose through internal
- * properties rather than emitting the variable directly, so the mode switch is
- * the part to distrust — the colour has to follow it, not freeze at build time.
- */
-export const ShadowFollowsMode: Story = {
-  args: {},
-  render: (args) => (
-    <Theme {...args} className="flex gap-6 p-10">
-      {["shadow-xs", "shadow-sm", "shadow-md"].map((className) => (
-        <div key={className} className={`bg-card ${className} rounded-lg px-6 py-8 text-sm`}>
-          {className}
+      {["bg-primary", "bg-primary/75", "bg-primary/50", "bg-primary/25"].map((utility) => (
+        <div key={utility} className={cn(utility, "text-on-primary rounded-md px-4 py-6 text-sm")}>
+          {utility}
         </div>
       ))}
     </Theme>
