@@ -100,6 +100,20 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A real <button> in four paints - PrimaryButton fills with the primary colour, GhostButton has no fill until you point at it, LinkButton looks like a link but is still a button, DangerButton is for anything you would want a moment to reconsider. variant=\"default\" is accepted as a silent alias for primary, because that is the word shadcn habit types. Size is an ordinary prop: sm, md, lg at 32, 40 and 48px, all clear of the 24px minimum target size. The height is a minimum rather than a fixed height, so a long label grows the button instead of spilling out of it. The focus ring is a 2px outline in the focus-ring role, offset by 2px, on :focus-visible and never on :focus - :focus would put a ring on every mouse click. It is server-renderable as written; attaching an onClick makes the caller's file browser-only, not this one.",
+      "files": [
+        {
+          "path": "src/components/button.tsx",
+          "type": "registry:ui",
+          "target": "components/button.tsx"
+        }
+      ],
+      "registryDependencies": []
     }
   ]
 }
