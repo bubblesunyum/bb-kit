@@ -180,6 +180,20 @@
         "skeleton",
         "stack"
       ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "A pill that is a real <button> - the tag on a card and the toggle in a filter bar are the same component, because a tag you can click and a tag you cannot should not look like two different things. There is no variant at all: unselected and selected are states, and a filled variant would be a second way to say selected. Unselected is outlined with the input border, which is the role built to clear 3:1, since the outline is the only thing marking the control. Selected fills with the primary colour rather than the highlight - no pale tint reaches 3:1, and a selected tag is reporting the state of a control - and it also changes text colour and weight, so the two states do not differ by hue alone. aria-pressed carries the state to a screen reader. The badge never holds the state itself: onSelectedChange asks for the opposite of what it currently is, and the caller decides. A caller's own onClick runs first and can preventDefault to stop the toggle. Heights match Button's 32 / 40 / 48px, all well clear of the 24px minimum target size, which matters most here because a tag toggle is the smallest clickable thing in the kit.",
+      "files": [
+        {
+          "path": "src/components/badge.tsx",
+          "type": "registry:ui",
+          "target": "components/badge.tsx"
+        }
+      ],
+      "registryDependencies": []
     }
   ]
 }
