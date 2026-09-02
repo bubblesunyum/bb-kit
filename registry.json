@@ -44,6 +44,20 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "surface",
+      "type": "registry:ui",
+      "title": "Surface",
+      "description": "A box with no meaning: the card colour, a corner radius and padding, in three forms. Plain is the default and has neither border nor shadow; OutlineSurface draws a hairline edge in the border role; RaisedSurface lifts off the page with a small shadow. The forms are defined once here, so every other box in the kit - Card, ListItem - inherits them and nothing drifts. There is no PlainSurface, because Surface already is it. The shadow colour is keyed to the mode rather than to how light the page is, so raised also separates by its card colour and the shadow is a second signal, not the only one. Padding and radius are ordinary defaults - override them from outside with className when a surface holds an image to its own edges.",
+      "files": [
+        {
+          "path": "src/components/surface.tsx",
+          "type": "registry:ui",
+          "target": "components/surface.tsx"
+        }
+      ],
+      "registryDependencies": []
     }
   ]
 }
