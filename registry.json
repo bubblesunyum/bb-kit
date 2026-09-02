@@ -58,6 +58,48 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "A placeholder for content that has not arrived yet. The caller knows the height the real content will take, so they pick the size - it defaults to a single 16px bar, full width, which is right for a line of body copy. Lines stacks that many bars with a gap, last one shorter to read as text; width and height take any CSS length (\"200px\", \"50%\", 200 as px). Animation holds still for readers who asked for reduced motion, through a CSS media query rather than a JS hook, so the component stays server-renderable.",
+      "files": [
+        {
+          "path": "src/components/skeleton.tsx",
+          "type": "registry:ui",
+          "target": "components/skeleton.tsx"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "A real dividing line, not a border on a neighbour. Horizontal by default (a hairline across, h-px w-full) and vertical when asked (w-px h-full). Carries role=\"separator\" and data-orientation so it is visible in the accessibility tree and styleable from outside. Paints the border role and is shrink-proof inside a flex row, so it does not collapse when neighbours grow.",
+      "files": [
+        {
+          "path": "src/components/separator.tsx",
+          "type": "registry:ui",
+          "target": "components/separator.tsx"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "EmptyState",
+      "description": "What to show when there is nothing to show. A centred stack with an optional icon, a title, a quiet description and a place for an action (usually a button). It adds no background and no card of its own - the caller decides where it sits and how tall its container is. Inside a List the empty slot renders it; on its own it centres within whatever box it is given. Title is a heading, description is quiet text, icon is muted and centred.",
+      "files": [
+        {
+          "path": "src/components/empty-state.tsx",
+          "type": "registry:ui",
+          "target": "components/empty-state.tsx"
+        }
+      ],
+      "registryDependencies": []
     }
   ]
 }
