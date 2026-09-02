@@ -35,6 +35,12 @@ export function Card({ variant = "raised", className, ...props }: CardProps) {
  * Which edges it reaches depends on where it sits: first in the card it takes
  * the top and rounds the top corners, last it takes the bottom, and on its own
  * it takes both.
+ *
+ * The margin is the exact negative of `Surface`'s padding, and knows that
+ * number rather than reading it. So a card whose padding is overridden — the
+ * one override `Surface` explicitly invites — leaves a gap here, or spills past
+ * the corners if the padding shrinks. Override the two together: `p-6` on the
+ * card wants `-mx-6` on the media.
  */
 export function CardMedia({ className, ...props }: ComponentProps<"div">) {
   return (

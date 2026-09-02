@@ -112,3 +112,19 @@ describe("overriding it from outside", () => {
     expect(card).not.toHaveClass("p-4")
   })
 })
+
+describe("the media's bleed against the card's padding", () => {
+  // Surface invites a padding override and CardMedia knows the default number
+  // rather than reading it, so the two have to move together. This test is
+  // where that shows up if either side changes.
+  test("the cancel margin is the exact negative of Surface's padding", () => {
+    render(
+      <Card data-testid="card">
+        <CardMedia data-testid="media" />
+      </Card>,
+    )
+
+    expect(screen.getByTestId("card")).toHaveClass("p-4")
+    expect(screen.getByTestId("media")).toHaveClass("-mx-4")
+  })
+})

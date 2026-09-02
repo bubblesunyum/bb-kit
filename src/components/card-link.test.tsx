@@ -88,3 +88,45 @@ describe("a card that has other clickable things in it", () => {
     expect(screen.getByRole("button").parentElement).toHaveClass("relative")
   })
 })
+
+// Both of these pin couplings that are silent at runtime: the technique is
+// working correctly, in a place it does not belong. A test is the only thing
+// that will notice if the shape ever changes.
+describe("where the overlay actually anchors", () => {
+  test("the card is the only positioned ancestor a title link can find", () => {
+    render(
+      <Card data-testid="card">
+        <CardTitle>
+          <H3>
+            <CardLink href="/post">A post</CardLink>
+          </H3>
+        </CardTitle>
+      </Card>,
+    )
+
+    const positioned = closestPositioned(screen.getByRole("link"))
+    expect(positioned).toBe(screen.getByTestId("card"))
+  })
+
+  test("a link put in the footer anchors to the footer, which is the trap", () => {
+    render(
+      <Card data-testid="card">
+        <CardTitle>
+          <H3>A post</H3>
+        </CardTitle>
+        <CardFooter data-testid="footer">
+          <CardLink href="/post">Read more</CardLink>
+        </CardFooter>
+      </Card>,
+    )
+
+    const positioned = closestPositioned(screen.getByRole("link"))
+    expect(positioned).toBe(screen.getByTestId("footer"))
+    expect(positioned).not.toBe(screen.getByTestId("card"))
+  })
+})
+
+/** The nearest ancestor the overlay would resolve `inset-0` against. */
+function closestPositioned(from: HTMLElement) {
+  return from.parentElement?.closest(".relative") ?? null
+}

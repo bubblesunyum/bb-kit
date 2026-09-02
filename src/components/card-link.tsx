@@ -15,10 +15,19 @@ import { cn } from "@/lib/utils"
  * inside still work, and there is one link in the accessibility tree rather
  * than one per element.
  *
+ * **Put it in the title, not the footer.** The overlay covers the nearest
+ * positioned ancestor, and `CardFooter` is positioned — so a `CardLink` inside
+ * a footer stretches over the footer alone and the rest of the card stops being
+ * clickable, silently. That is the same technique working correctly in a place
+ * it does not belong; there is nowhere for it to report the mistake, so it is
+ * written here instead.
+ *
  * Two costs, both accepted rather than bugs to fix later. Text inside a
  * stretched-link card cannot be selected, because the overlay sits on top of
  * it. And anything else interactive in the card has to sit above the overlay —
- * give it `relative` (or `isolate`), or the link swallows its clicks.
+ * give it `relative` (or `isolate`), or the link swallows its clicks. Those two
+ * pull in opposite directions and cannot both be had: whatever is lifted above
+ * the overlay becomes a containing block for the next overlay inside it.
  */
 export function CardLink({ asChild = false, className, ...props }: CardLinkProps) {
   const Component = asChild ? Slot : "a"
