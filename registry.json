@@ -130,6 +130,22 @@
       "registryDependencies": [
         "surface"
       ]
+    },
+    {
+      "name": "card-link",
+      "type": "registry:ui",
+      "title": "CardLink",
+      "description": "Makes the whole Card around it clickable without wrapping the card in an anchor. The obvious move - Card asChild round an <a> - is wrong the moment the card contains anything else clickable, because interactive elements cannot nest, and every post card has tags, so that is the normal case rather than the edge case. Card sets position: relative and the link grows a pseudo-element that covers it: the card is clickable everywhere, the tags inside still take their own clicks, and there is one link in the accessibility tree rather than one per element. The focus ring goes on the overlay, so tabbing to a card outlines the card. Two accepted costs: text inside a stretched-link card cannot be selected, and anything else interactive has to sit above the overlay - CardFooter already does, so put clickable things there or give yours position: relative. asChild lets a framework's own Link component be the link.",
+      "files": [
+        {
+          "path": "src/components/card-link.tsx",
+          "type": "registry:ui",
+          "target": "components/card-link.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "card"
+      ]
     }
   ]
 }

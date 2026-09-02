@@ -72,13 +72,20 @@ export function CardBody({ className, ...props }: ComponentProps<"div">) {
   )
 }
 
-/** The row along the bottom: actions, tags, a date. It wraps rather than spills. */
+/**
+ * The row along the bottom: actions, tags, a date. It wraps rather than spills.
+ *
+ * It is positioned, and that is load-bearing rather than decorative: a
+ * `CardLink` covers the whole card with an overlay, and anything else clickable
+ * has to sit above that overlay or the link swallows its clicks. The footer is
+ * where those things nearly always are, so it lifts itself.
+ */
 export function CardFooter({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       {...props}
       data-slot="card-footer"
-      className={cn("flex flex-wrap items-center gap-2", className)}
+      className={cn("relative flex flex-wrap items-center gap-2", className)}
     />
   )
 }
