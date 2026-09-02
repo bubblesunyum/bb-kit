@@ -21,7 +21,7 @@
       "name": "stack",
       "type": "registry:ui",
       "title": "Stack",
-      "description": "VStack stacks children downward and HStack lays them out sideways, both with an 8px gap you never have to ask for. Gap takes Tailwind's own spacing scale rather than a second scale; align and justify are ordinary props, and HStack centres across the row because a row is nearly always something small beside a line of text. No loading state and no empty state - a stack takes arbitrary children, so it cannot tell empty from one child that renders nothing; place a Skeleton yourself.",
+      "description": "VStack stacks children downward and HStack lays them out sideways, both with an 8px gap you never have to ask for. Gap takes Tailwind's own spacing scale rather than a second scale; align and justify are ordinary props, and HStack centres across the row because a row is nearly always something small beside a line of text. No loading state and no empty state - a stack takes arbitrary children, so it cannot tell empty from one child that renders nothing; place a Skeleton yourself. asChild makes the single child the stack rather than wrapping it in a div, which is how List gets its <ul> without a second gap scale.",
       "files": [
         {
           "path": "src/components/stack.tsx",
@@ -161,6 +161,24 @@
       ],
       "registryDependencies": [
         "surface"
+      ]
+    },
+    {
+      "name": "list",
+      "type": "registry:ui",
+      "title": "List",
+      "description": "A proper list that owns the gap between rows, the empty state and the loading state - which the stacks deliberately do not, because a stack takes arbitrary children and cannot tell an empty list from one child that renders nothing. renderItem returns the contents of a row, not the row element: List wraps each one in a ListItem, so every row is a real <li>. It never truncates - the old kit's list silently rendered the first three items and dropped the rest - and it keeps the header in every state, where the old one returned early while loading and took the header with it. Precedence is error, then loading, then empty, and empty only when items is actually empty. Loading renders placeholder rows so the block keeps a list-shaped height instead of collapsing. gap takes Tailwind's spacing scale; getKey falls back to the index, which is wrong the moment the list is reordered.",
+      "files": [
+        {
+          "path": "src/components/list.tsx",
+          "type": "registry:ui",
+          "target": "components/list.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "list-item",
+        "skeleton",
+        "stack"
       ]
     }
   ]

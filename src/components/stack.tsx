@@ -1,3 +1,4 @@
+import { Slot } from "@radix-ui/react-slot"
 import type { ComponentProps } from "react"
 
 import { cn } from "@/lib/utils"
@@ -31,11 +32,17 @@ function Stack({
   gap = 2,
   align = "stretch",
   justify = "start",
+  asChild = false,
   className,
   ...props
 }: StackProps & { direction: Direction }) {
+  /* asChild lets the stack be an element the layout actually needs — the <ul>
+     inside List — instead of a div wrapping one, which is what keeps List's
+     gap on the same scale as every other gap rather than a second table. */
+  const Component = asChild ? Slot : "div"
+
   return (
-    <div
+    <Component
       data-slot="stack"
       className={cn("flex", direction, GAPS[gap], ALIGNS[align], JUSTIFIES[justify], className)}
       {...props}
@@ -48,6 +55,8 @@ type StackProps = ComponentProps<"div"> & {
   gap?: Gap
   align?: Align
   justify?: Justify
+  /** Render the single child as the stack, rather than wrapping it in a div. */
+  asChild?: boolean
 }
 
 type Direction = "flex-col" | "flex-row"

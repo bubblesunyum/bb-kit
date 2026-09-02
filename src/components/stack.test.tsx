@@ -89,3 +89,20 @@ test("children are rendered as given, in order, and never replaced", () => {
   expect(screen.getByText("one")).toBeInTheDocument()
   expect(screen.getByText("two")).toBeInTheDocument()
 })
+
+describe("standing in for another element", () => {
+  // This is how List gets its <ul> without a second gap scale to keep in step.
+  test("asChild makes the child the stack", () => {
+    render(
+      <VStack asChild gap={6}>
+        <ul data-testid="rows">
+          <li>a row</li>
+        </ul>
+      </VStack>,
+    )
+
+    const rows = screen.getByTestId("rows")
+    expect(rows.tagName).toBe("UL")
+    expect(rows).toHaveClass("flex", "flex-col", "gap-6")
+  })
+})
