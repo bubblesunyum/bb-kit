@@ -35,7 +35,7 @@ export function EmptyState({
         </div>
       ) : null}
       {title ? (
-        <H3 data-slot="empty-state-title" className="max-w-sm wrap-break-word">
+        <H3 data-slot="empty-state-title" align="center" className="max-w-sm wrap-break-word">
           {title}
         </H3>
       ) : null}
@@ -44,6 +44,7 @@ export function EmptyState({
           data-slot="empty-state-description"
           tone="quiet"
           size="sm"
+          align="center"
           className="max-w-sm wrap-break-word"
         >
           {description}
