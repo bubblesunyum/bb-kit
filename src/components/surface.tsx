@@ -1,3 +1,4 @@
+import { Slot } from "@radix-ui/react-slot"
 import type { ComponentProps } from "react"
 
 import { classFor } from "@/lib/classes"
@@ -11,9 +12,14 @@ import { cn } from "@/lib/utils"
  * The default form is `plain` — no border and no shadow. There is no
  * `PlainSurface`, because `<Surface>` already is it.
  */
-export function Surface({ variant = "plain", className, ...props }: SurfaceProps) {
+export function Surface({ variant = "plain", asChild = false, className, ...props }: SurfaceProps) {
+  /* asChild lets the box become the element it is standing in for — an <a> for
+     a card that is entirely a link, an <li> for a row inside a list — instead of
+     wrapping one, which is what Card and ListItem are built on. */
+  const Component = asChild ? Slot : "div"
+
   return (
-    <div
+    <Component
       data-slot="surface"
       /* text-text as well as bg-card: a box that paints its own background and
          not its own foreground inherits whatever colour it was dropped into,
@@ -46,6 +52,8 @@ export function RaisedSurface(props: FormProps) {
 type SurfaceProps = ComponentProps<"div"> & {
   /** `outline`, not `outlined` — shadcn's word, so the word typed from habit. */
   variant?: Variant
+  /** Render the single child as the box, rather than wrapping it in a div. */
+  asChild?: boolean
 }
 
 /** The wrappers pick the variant, so no caller can pass a second one. */

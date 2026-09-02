@@ -90,3 +90,29 @@ describe("a wrong guess at a variant", () => {
     warn.mockRestore()
   })
 })
+
+describe("standing in for another element", () => {
+  // Card and ListItem are built on this: a card that is entirely a link has to
+  // be an <a>, not a div with an <a> wrapped round it.
+  test("asChild makes the child the box", () => {
+    render(
+      <Surface asChild variant="outline">
+        <a href="/somewhere">a link that is a box</a>
+      </Surface>,
+    )
+
+    const link = screen.getByRole("link", { name: "a link that is a box" })
+    expect(link).toHaveClass("bg-card", "rounded-lg", "border")
+    expect(link).toHaveAttribute("data-slot", "surface")
+  })
+
+  test("without it the box is a div wrapping the child", () => {
+    render(
+      <Surface>
+        <a href="/somewhere">an ordinary link</a>
+      </Surface>,
+    )
+
+    expect(screen.getByRole("link")).not.toHaveClass("bg-card")
+  })
+})

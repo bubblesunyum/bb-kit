@@ -1,0 +1,13 @@
+<!-- A stand-in cover for the Card and List stories. Deliberately wider than any
+     card it is dropped into, so object-cover has something to crop. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img" aria-label="Placeholder cover">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9aa5a1"/>
+      <stop offset="1" stop-color="#5c6a65"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="url(#g)"/>
+  <circle cx="260" cy="150" r="90" fill="#ffffff" fill-opacity="0.25"/>
+  <path d="M0 420 L300 250 L560 380 L860 190 L1200 330 L1200 500 L0 500 Z" fill="#ffffff" fill-opacity="0.18"/>
+</svg>

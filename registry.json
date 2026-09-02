@@ -49,7 +49,7 @@
       "name": "surface",
       "type": "registry:ui",
       "title": "Surface",
-      "description": "A box with no meaning: the card colour, a corner radius and padding, in three forms. Plain is the default and has neither border nor shadow; OutlineSurface draws a hairline edge in the border role; RaisedSurface lifts off the page with a small shadow. The forms are defined once here, so every other box in the kit - Card, ListItem - inherits them and nothing drifts. There is no PlainSurface, because Surface already is it. The shadow colour is keyed to the mode rather than to how light the page is, so raised also separates by its card colour and the shadow is a second signal, not the only one. Padding and radius are ordinary defaults - override them from outside with className when a surface holds an image to its own edges.",
+      "description": "A box with no meaning: the card colour, a corner radius and padding, in three forms. Plain is the default and has neither border nor shadow; OutlineSurface draws a hairline edge in the border role; RaisedSurface lifts off the page with a small shadow. The forms are defined once here, so every other box in the kit - Card, ListItem - inherits them and nothing drifts. There is no PlainSurface, because Surface already is it. The shadow colour is keyed to the mode rather than to how light the page is, so raised also separates by its card colour and the shadow is a second signal, not the only one. Padding and radius are ordinary defaults - override them from outside with className when a surface holds an image to its own edges. asChild makes the single child the box rather than wrapping it in a div, which is what Card and ListItem are built on - a card that is entirely a link has to be an <a>, not a div with an <a> round it.",
       "files": [
         {
           "path": "src/components/surface.tsx",
@@ -114,6 +114,22 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "A standalone box with content parts: CardMedia, CardTitle, CardBody, CardFooter. It is a Surface with the raised form as its default, laid out as a column with a gap. CardTitle renders no heading of its own - put an H2 or H3 inside it, at the level the surrounding page actually needs, because a level hardcoded here would be wrong about half the time. Surface owns the card's padding, so CardMedia reaches the edges by cancelling it, taking the top when it is first, the bottom when it is last, and both when it is the only part. CardBody takes the leftover height, so footers line up across a row of cards with different titles. The card is what sets position: relative, so a CardLink inside can stretch to cover it. asChild makes the card the element it stands in for - use it only when nothing inside the card is clickable too; when anything is, reach for CardLink. For a row inside a list, use ListItem instead: a list row is only valid inside a list.",
+      "files": [
+        {
+          "path": "src/components/card.tsx",
+          "type": "registry:ui",
+          "target": "components/card.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "surface"
+      ]
     }
   ]
 }
