@@ -30,6 +30,20 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "page",
+      "type": "registry:ui",
+      "title": "Page",
+      "description": "The background everything else sits on: it sets the page colour, the text colour and a full-viewport min height, and nothing else in the kit does. Without it a card floats on browser-default white and quiet text is unreadable in dark mode. It adds no padding and no max width, because a page is not always a column of prose. Page is a div, so the real <body> behind it stays white - visible on a rubber-band scroll and behind any short page. Paint the body too: <html suppressHydrationWarning> and <body className=\"bg-page text-text\">. The suppressHydrationWarning is not optional either - the theme script sets attributes on <html> before React starts, and React reports that as a mismatch.",
+      "files": [
+        {
+          "path": "src/components/page.tsx",
+          "type": "registry:ui",
+          "target": "components/page.tsx"
+        }
+      ],
+      "registryDependencies": []
     }
   ]
 }
