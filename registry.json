@@ -146,6 +146,22 @@
       "registryDependencies": [
         "card"
       ]
+    },
+    {
+      "name": "list-item",
+      "type": "registry:ui",
+      "title": "ListItem",
+      "description": "One row inside a List. It renders an <li>, so it is only valid inside a list - a box that stands on its own is a Card instead, with the same parts and a different wrapper. It is a Surface in the plain form by default, because rows sit against each other and a list of outlined boxes reads as a stack of unrelated things. CardListItem is the named wrapper for the raised form - a row that looks like a card - not a second component. The row is positioned, so a CardLink inside it works exactly as it does inside a Card and the focus ring lands on the whole row. List supplies the <ul> and the gap between rows; asChild replaces the row element, and whatever you pass should still be an <li>.",
+      "files": [
+        {
+          "path": "src/components/list-item.tsx",
+          "type": "registry:ui",
+          "target": "components/list-item.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "surface"
+      ]
     }
   ]
 }
