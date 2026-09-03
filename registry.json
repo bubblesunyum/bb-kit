@@ -208,6 +208,80 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "filtering",
+      "type": "registry:lib",
+      "title": "Filtering",
+      "description": "The one piece of real logic in the kit, and it ships as plain functions - no React, no dependencies - so a route handler, a build script or a test can use it as readily as a component. It knows nothing about posts or any other shape: you tell it how to read tags and text out of your own objects through an accessors argument. filterItems keeps what matches the text and the tags, preserving input order, and hands back the very same array when nothing is selected, so a useMemo above it has an unchanged reference to compare. Several tags narrow by default - an item must carry all of them - and match: 'any' flips that to widening. Text search ignores case and accents in three steps: decompose, drop the Latin combining marks, then recompose; that last step is not optional, because decomposing splits a Korean syllable into its parts and skipping the recompose would compare split text against unsplit and match nothing, breaking the exact languages the accent-stripping was meant to leave alone. Search matches anywhere in the text, not only at word starts, and combines with tags using and. collectTags counts every item whatever is selected, for a static tag cloud; collectTagsWithSelection recounts against the criteria in force and marks each tag selected or disabled, for a live filter bar - a tag that would leave the reader with nothing greys out, and a tag that is already on is never disabled, because the question asked is whether adding it would empty the list, not whether toggling it would. Both order tags by count, highest first, then alphabetically on a tie, because that order is visible on screen and wrong is not something anyone can spot by eye. Tag matching is exact and case-sensitive, and a tag twice on one item counts once. toggleTag always returns a new array.",
+      "files": [
+        {
+          "path": "src/lib/filtering.ts",
+          "type": "registry:lib",
+          "target": "lib/filtering.ts"
+        }
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "use-filtered-items",
+      "type": "registry:hook",
+      "title": "useFilteredItems",
+      "description": "filterItems, memoized, with the typing caught up to. Only the text is delayed, by 200ms: the caller's own input value is never touched, so the field stays immediate - a delayed input feels broken rather than fast. Tags are not delayed either, because a click is one event rather than a stream and waiting after one looks like a dropped press. The memo depends on the two accessor functions rather than the object holding them, and on a key derived from the selected tags rather than the array itself, since both are written inline at nearly every call site and would otherwise be new on every render; hoist the accessors to a module constant or a useCallback or the memo has nothing to hold on to. It ships with useDelayedValue, the general hook underneath it: the value arriving late, starting at whatever it was given so a first render never waits, and thereafter waiting for the value to hold still.",
+      "files": [
+        {
+          "path": "src/hooks/use-filtered-items.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-filtered-items.ts"
+        },
+        {
+          "path": "src/hooks/use-delayed-value.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-delayed-value.ts"
+        }
+      ],
+      "registryDependencies": [
+        "filtering"
+      ]
+    },
+    {
+      "name": "filter-bar",
+      "type": "registry:ui",
+      "title": "Filter Bar",
+      "description": "A search field and a row of tag toggles - where SearchField, Badge and the filtering functions meet. It holds nothing: query and selected belong to the caller, because those same two values are what useFilteredItems needs, and a bar keeping its own copy would leave the caller reading the filter state back out of the UI. tags takes plain strings, or the objects collectTagsWithSelection returns; pass those and a tag that would leave the reader with nothing greys out before it is pressed. There is nothing to configure - the shape handed in is the behaviour that comes out. A selected tag is never disabled however it arrives, because greying out the tag under the finger that just pressed it reads as a bug and traps the reader in a filter they cannot lift. onSelectedChange is handed the whole new selection rather than the tag that moved, so callers store what they are given instead of reimplementing toggleTag at every call site. The tag row is a named group, so a screen reader arriving at the first pressed button is told what the row is for, and it wraps rather than scrolling sideways, because a tag pushed off the end of a scroller is a filter nobody learns exists.",
+      "files": [
+        {
+          "path": "src/components/filter-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/filter-bar.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "badge",
+        "search-field",
+        "stack",
+        "filtering"
+      ]
+    },
+    {
+      "name": "post-layouts",
+      "type": "registry:example",
+      "title": "Post Layouts",
+      "description": "Two post layouts - one card-shaped, one row-shaped - shipped as examples to copy rather than components to configure. A post has a cover, a title, a date, tags and an excerpt, and that shape belongs to your site rather than to a UI kit, so the arrangement is given as source to edit. There are two on purpose: the same five fields out of the same pieces, which is what proves the pieces recombine. PostCard stands on its own and is clickable everywhere, with the CardLink in the title rather than the footer, because the overlay covers the nearest positioned ancestor and CardFooter is positioned - put the link there and only the footer stays clickable. PostRow renders the contents of a row rather than the row itself, so it goes straight into a List's renderItem, and its thumbnail is fixed width and never shrinks, or a long title collapses it to a sliver. The tags in both sit above the stretched link, or it swallows their presses. The date is a real time element with the machine-readable value in the attribute, formatted with the locale and the time zone both named, because a server and a browser in different zones format the same instant differently and React calls that a hydration mismatch. Covers carry an empty alt, since the title beside them already says what they are. An example becomes a real component when the same shape has held up across three separate uses without changing - not before.",
+      "files": [
+        {
+          "path": "src/examples/post.tsx",
+          "type": "registry:example",
+          "target": "examples/post.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "badge",
+        "card",
+        "card-link",
+        "stack",
+        "text"
+      ]
     }
   ]
 }
