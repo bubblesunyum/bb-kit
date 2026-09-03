@@ -1,3 +1,5 @@
+import type { Post } from "@/examples/post"
+
 /**
  * The content every story that shows text or a list should use. Tidy sample
  * copy never overflows, never wraps badly and never has a hole in it, so it
@@ -57,3 +59,39 @@ export type AwkwardItem = {
   tags: readonly string[]
   date: string | undefined
 }
+
+/**
+ * The same awkwardness in the shape the post examples take: an empty title, a
+ * two-hundred-character one, one unbreakable word, a missing cover and a
+ * missing date, and a tag row long enough to wrap twice.
+ */
+export function awkwardPosts(): Post[] {
+  return [
+    { href: "#empty", title: AWKWARD.empty, excerpt: AWKWARD.empty, tags: TAG_SETS.none },
+    {
+      href: "#long",
+      title: AWKWARD.longTitle,
+      excerpt: AWKWARD.longTitle,
+      tags: TAG_SETS.many,
+      date: AWKWARD.date,
+      cover: COVER,
+    },
+    {
+      href: "#unbreakable",
+      title: AWKWARD.unbreakableWord,
+      excerpt: AWKWARD.unbreakableWord,
+      tags: TAG_SETS.few,
+      cover: COVER,
+    },
+    {
+      href: "#one-character",
+      title: AWKWARD.oneCharacter,
+      excerpt: AWKWARD.oneCharacter,
+      tags: TAG_SETS.one,
+      date: AWKWARD.date,
+    },
+  ]
+}
+
+// The one placeholder every story already uses, rather than a second.
+const COVER = "/story-cover.svg"
