@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 
 import { HStack, VStack } from "./stack"
 
@@ -104,5 +104,21 @@ describe("standing in for another element", () => {
     const rows = screen.getByTestId("rows")
     expect(rows.tagName).toBe("UL")
     expect(rows).toHaveClass("flex", "flex-col", "gap-6")
+  })
+})
+
+describe("a wrong guess at a prop value", () => {
+  test.each([
+    ["gap", { gap: 7 }, "unknown Stack's gap \"7\""],
+    ["align", { align: "middle" }, "unknown Stack's align \"middle\""],
+    ["justify", { justify: "spread" }, "unknown Stack's justify \"spread\""],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ])("%s says so in the console rather than silently doing nothing", (_name, props: any, message) => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+
+    render(<VStack {...props}>a child</VStack>)
+
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining(message))
+    warn.mockRestore()
   })
 })

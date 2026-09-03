@@ -194,6 +194,20 @@
         }
       ],
       "registryDependencies": []
+    },
+    {
+      "name": "search-field",
+      "type": "registry:ui",
+      "title": "Search Field",
+      "description": "A real <input type=\"search\"> with the magnifier and the clear button a reader expects to find on one. Unlike Button and Badge, this one is marked browser-only: those become browser-only in the caller's file when a handler is attached there, whereas a search field has nowhere to be but the browser, because onValueChange is the whole point of it. It never holds the text - value and onValueChange belong to the caller, which is what lets FilterBar keep the input immediate while it delays the filtering behind it. The clear button is a state rather than a prop and has no way to switch it off: it appears when there is something to clear, and it is a real button so it can be tabbed to, which the browser's own is not in every engine. WebKit's native clear button is suppressed so there are not two; Firefox draws none at all, which is the reason ours exists. The field has no visible label, so the placeholder becomes its accessible name unless the caller passes one. The background is transparent and only the input border is drawn, so the same field sits correctly on the page and inside a card without being told which. Heights match Button and Badge at 32 / 40 / 48px, and the horizontal padding is the height on both sides - room for the magnifier at the start and for the clear button, which is exactly that square. Insets use logical properties, so both swap ends in a right-to-left language instead of crossing the text. className lands on the wrapper, which is the box a caller sizes; everything else spreads onto the input.",
+      "files": [
+        {
+          "path": "src/components/search-field.tsx",
+          "type": "registry:ui",
+          "target": "components/search-field.tsx"
+        }
+      ],
+      "registryDependencies": []
     }
   ]
 }

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { axe } from "jest-axe"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 
 import { AWKWARD } from "@/test/awkward-content"
 import { H1, H2, H3, H4, Label, Span, Text } from "./text"
@@ -131,4 +131,21 @@ test("the whole family passes the accessibility checker", async () => {
   )
 
   expect(await axe(container)).toHaveNoViolations()
+})
+
+describe("a wrong guess at a prop value", () => {
+  test.each([
+    ["size", { size: "huge" }, "unknown Text's size \"huge\""],
+    ["tone", { tone: "soft" }, "unknown Text's tone \"soft\""],
+    ["weight", { weight: "black" }, "unknown Text's weight \"black\""],
+    ["align", { align: "middle" }, "unknown Text's align \"middle\""],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ])("%s says so in the console rather than silently doing nothing", (_name, props: any, message) => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+
+    render(<Text {...props}>copy</Text>)
+
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining(message))
+    warn.mockRestore()
+  })
 })

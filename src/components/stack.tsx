@@ -1,6 +1,7 @@
 import { Slot } from "@radix-ui/react-slot"
 import type { ComponentProps } from "react"
 
+import { classFor } from "@/lib/classes"
 import { cn } from "@/lib/utils"
 
 /** Children stacked downward, with a gap you never have to ask for. */
@@ -44,7 +45,14 @@ function Stack({
   return (
     <Component
       data-slot="stack"
-      className={cn("flex", direction, GAPS[gap], ALIGNS[align], JUSTIFIES[justify], className)}
+      className={cn(
+        "flex",
+        direction,
+        classFor(GAPS, gap, "Stack's gap"),
+        classFor(ALIGNS, align, "Stack's align"),
+        classFor(JUSTIFIES, justify, "Stack's justify"),
+        className,
+      )}
       {...props}
     />
   )

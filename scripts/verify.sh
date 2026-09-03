@@ -77,8 +77,12 @@ fi
 # failure. Ask package.json what it actually has.
 has_script() { node -e "process.exit(require('./package.json').scripts?.['$1']?0:1)" 2>/dev/null; }
 
-has_script typecheck && step "typecheck" npm run typecheck
+# Build before typecheck, not after. tsconfig includes .next/types and
+# next-env.d.ts, both of which `next build` generates — so on a clean checkout
+# or a cleared .next the typecheck fails on missing generated types and reports
+# a toolchain gap as if it were the change's fault.
 has_script build && step "build" npm run build
+has_script typecheck && step "typecheck" npm run typecheck
 
 if [ "$mode" != "--quick" ]; then
   has_script test && step "tests" npm test -- --run

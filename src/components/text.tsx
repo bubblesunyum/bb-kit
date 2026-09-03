@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react"
 
+import { classFor } from "@/lib/classes"
 import { cn } from "@/lib/utils"
 
 /** A paragraph. Everything else in this file is this with the element chosen. */
@@ -74,10 +75,10 @@ function Styled<T extends TextElement>({
          the lesser ugliness, and it is a default nobody should have to ask for. */
       className={cn(
         "wrap-break-word",
-        SIZES[size],
-        TONES[tone],
-        WEIGHTS[weight],
-        ALIGNS[align],
+        classFor(SIZES, size, "Text's size"),
+        classFor(TONES, tone, "Text's tone"),
+        classFor(WEIGHTS, weight, "Text's weight"),
+        classFor(ALIGNS, align, "Text's align"),
         className,
       )}
       {...(props as ComponentProps<"p">)}
