@@ -67,6 +67,22 @@ describe("the kitchen sink", () => {
     await waitFor(() => expect(screen.getByText("8 of 8 posts")).toBeInTheDocument())
   })
 
+  /* The tag row is counted from the criteria the posts were filtered by. Count
+     it from the raw query instead and the tags grey out on the first keystroke
+     while the cards contradicting them are still on screen. */
+  test("the tags never grey out ahead of the posts they describe", async () => {
+    render(<KitchenSinkPage />)
+
+    await userEvent.click(tag("css"))
+    await userEvent.type(screen.getByRole("searchbox"), "zzz")
+
+    expect(screen.getByText("3 of 8 posts")).toBeInTheDocument()
+    expect(tag("design")).toBeEnabled()
+
+    await waitFor(() => expect(screen.getByText("0 of 8 posts")).toBeInTheDocument())
+    expect(tag("design")).toBeDisabled()
+  })
+
   test("the layout choice swaps cards for rows without touching the filter", async () => {
     const { container } = render(<KitchenSinkPage />)
     const layout = screen.getByRole("group", { name: "Layout" })

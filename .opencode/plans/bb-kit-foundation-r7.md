@@ -233,6 +233,8 @@ Heading wrappers set a default size and weight; both props still override. `H1` 
 
 `useFilteredItems(items, criteria, accessors)` returns the filtered array. It delays only the filtering, by 200ms; the caller's input value stays immediate.
 
+**Amended while building this** (bbk-0kt.2). It returns `{ items, criteria }` rather than the array alone. The criteria handed back are the *delayed* ones the items actually match, and something else on screen needs them: `FilterBar`'s greyed-out tags come from `collectTagsWithSelection`, and counted from the raw criteria that row runs a whole keystroke ahead of the list — tags grey out while the results contradicting them are still on screen. Caught by the correctness reviewer, at both call sites that wire the two together.
+
 **A `Badge` used as a toggle is not a variant.** Selected and unselected are *states*, per Rule 2 — an unselected badge is `outline`, a selected one is filled with the primary color (§5.1). Selected must also be distinguishable without relying on color alone: the fill plus the weight change does this, and `aria-pressed` carries it for screen readers.
 
 ### 3.6 Post layouts are examples, not components

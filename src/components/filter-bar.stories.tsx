@@ -126,8 +126,9 @@ function Filtering() {
   const [query, setQuery] = useState("")
   const [selected, setSelected] = useState<string[]>([])
 
-  const criteria = { text: query, tags: selected }
-  const items = useFilteredItems(ITEMS, criteria, ACCESSORS)
+  // The tags are counted from the criteria the items were filtered by, so the
+  // row never runs a keystroke ahead of the list under it.
+  const { items, criteria } = useFilteredItems(ITEMS, { text: query, tags: selected }, ACCESSORS)
   const tags = collectTagsWithSelection(ITEMS, criteria, ACCESSORS)
 
   return (

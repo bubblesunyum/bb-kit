@@ -68,7 +68,7 @@ describe("useFilteredItems", () => {
   test("it filters on the first render, without waiting", () => {
     const { result } = renderHook(() => useFilteredItems(POSTS, { text: "tokens" }, ACCESSORS))
 
-    expect(titles(result.current)).toEqual(["Designing tokens"])
+    expect(titles(result.current.items)).toEqual(["Designing tokens"])
   })
 
   test("typing waits, so the list does not thrash through every letter", () => {
@@ -77,10 +77,10 @@ describe("useFilteredItems", () => {
     })
 
     rerender({ text: "tok" })
-    expect(result.current).toHaveLength(4)
+    expect(result.current.items).toHaveLength(4)
 
     act(() => void vi.advanceTimersByTime(200))
-    expect(titles(result.current)).toEqual(["Designing tokens"])
+    expect(titles(result.current.items)).toEqual(["Designing tokens"])
   })
 
   // A click is one event, not a stream — a delay after one reads as a miss.
@@ -92,25 +92,49 @@ describe("useFilteredItems", () => {
 
     rerender({ tags: ["testing"] })
 
-    expect(titles(result.current)).toEqual(["Testing hooks"])
+    expect(titles(result.current.items)).toEqual(["Testing hooks"])
   })
 
   // An inline array is a new one every render and the same selection, which
   // is the whole reason the tags are keyed rather than depended on.
   test("the same array comes back while the criteria hold still", () => {
     const { result, rerender } = renderHook(() => useFilteredItems(POSTS, { tags: ["css"] }, ACCESSORS))
-    const first = result.current
+    const first = result.current.items
 
     rerender()
 
-    expect(result.current).toBe(first)
+    expect(result.current.items).toBe(first)
     expect(titles(first)).toEqual(["Designing tokens", "Cascade layers"])
   })
 
   test("nothing selected hands back the items themselves", () => {
     const { result } = renderHook(() => useFilteredItems(POSTS, {}, ACCESSORS))
 
-    expect(result.current).toBe(POSTS)
+    expect(result.current.items).toBe(POSTS)
+  })
+
+  /* A tag row counted from the raw criteria would grey out a tag a whole
+     keystroke before the results contradicting it left the screen. */
+  test("the criteria it hands back are the delayed ones the items match", () => {
+    const { result, rerender } = renderHook(({ text }) => useFilteredItems(POSTS, { text }, ACCESSORS), {
+      initialProps: { text: "" },
+    })
+
+    rerender({ text: "zzz" })
+    expect(result.current.criteria.text).toBe("")
+    expect(result.current.items).toHaveLength(4)
+
+    act(() => void vi.advanceTimersByTime(200))
+    expect(result.current.criteria.text).toBe("zzz")
+    expect(result.current.items).toHaveLength(0)
+  })
+
+  test("the tags and the match it hands back are the ones it used", () => {
+    const { result } = renderHook(() =>
+      useFilteredItems(POSTS, { tags: ["css"], match: "any" }, ACCESSORS),
+    )
+
+    expect(result.current.criteria).toEqual({ text: "", tags: ["css"], match: "any" })
   })
 })
 

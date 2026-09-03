@@ -32,8 +32,11 @@ export default function KitchenSinkPage() {
   const [selected, setSelected] = useState<string[]>([])
   const [layout, setLayout] = useState<Layout>("cards")
 
-  const criteria = { text: query, tags: selected }
-  const posts = useFilteredItems(POSTS, criteria, ACCESSORS)
+  /* The tags are counted from the criteria the posts were filtered by, not
+     from the raw ones: the text is delayed and the tags are not, so counting
+     against `query` would grey out tags a whole keystroke before the results
+     that contradict them left the screen. */
+  const { items: posts, criteria } = useFilteredItems(POSTS, { text: query, tags: selected }, ACCESSORS)
   const tags = collectTagsWithSelection(POSTS, criteria, ACCESSORS)
 
   const filtering = query !== "" || selected.length > 0
