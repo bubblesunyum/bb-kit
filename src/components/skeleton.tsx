@@ -50,12 +50,7 @@ export function Skeleton({
       style={{ width: normalizedWidth ?? undefined, ...style }}
     >
       {Array.from({ length: count }, (_, index) => (
-        <SkeletonLine
-          key={index}
-          isLast={index === count - 1}
-          height={normalizedHeight}
-          hasCustomWidth={normalizedWidth != null}
-        />
+        <SkeletonLine key={index} isLast={index === count - 1} height={normalizedHeight} />
       ))}
     </div>
   )
@@ -63,19 +58,11 @@ export function Skeleton({
 
 const PULSE = "bg-muted animate-pulse rounded-md motion-reduce:animate-none"
 
-function SkeletonLine({
-  isLast,
-  height,
-  hasCustomWidth,
-}: {
-  isLast: boolean
-  height: string | undefined
-  hasCustomWidth: boolean
-}) {
+function SkeletonLine({ isLast, height }: { isLast: boolean; height: string | undefined }) {
   return (
     <div
       data-slot="skeleton-line"
-      className={cn(PULSE, !height && "h-4", isLast && !hasCustomWidth ? "w-3/4" : "w-full")}
+      className={cn(PULSE, !height && "h-4", isLast ? "w-3/4" : "w-full")}
       style={{ height: height ?? undefined }}
     />
   )
@@ -100,7 +87,12 @@ function toCssDimension(value: string | number | undefined): string | undefined 
 type SkeletonProps = Omit<ComponentProps<"div">, "children"> & {
   /** How many bars to render. One bar is the default — a single line. */
   lines?: number
-  /** Any CSS length: "200px", "50%", 200 (as px). Defaults to 100%. */
+  /**
+   * The width of the whole skeleton, not of one bar: any CSS length —
+   * "200px", "50%", 200 (as px). Defaults to 100%. On a multi-line skeleton
+   * the lines fill it and the last still ends short, because a short last line
+   * is what a paragraph looks like rather than something width should undo.
+   */
   width?: string | number
   /** Any CSS length: "1rem", "16px", 16 (as px). Defaults to 16px (h-4). */
   height?: string | number

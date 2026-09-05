@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { axe } from "jest-axe"
+import type { FormEvent } from "react"
 import { describe, expect, test, vi } from "vitest"
 
 import { AWKWARD } from "@/test/awkward-content"
@@ -132,6 +133,54 @@ describe("clearing it", () => {
     expect(screen.getByRole("searchbox").className).toContain(
       "[&::-webkit-search-cancel-button]:appearance-none",
     )
+  })
+})
+
+describe("inside a real form", () => {
+  // type="button" is the only thing standing between the clear button and a
+  // submit on every clear. Asserting the attribute says the code is right;
+  // this says the browser agrees.
+  test("clearing does not submit the form around it", async () => {
+    const onSubmit = vi.fn((event: FormEvent) => event.preventDefault())
+    render(
+      <form onSubmit={onSubmit}>
+        <SearchField value="design" />
+        <button type="submit">Search</button>
+      </form>,
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Clear search" }))
+
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
+  test("the form's own submit button still submits", async () => {
+    const onSubmit = vi.fn((event: FormEvent) => event.preventDefault())
+    render(
+      <form onSubmit={onSubmit}>
+        <SearchField value="design" />
+        <button type="submit">Search</button>
+      </form>,
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: "Search" }))
+
+    expect(onSubmit).toHaveBeenCalled()
+  })
+
+  // A search field is the one input a reader expects Enter to work in.
+  test("Enter in the field submits", async () => {
+    const onSubmit = vi.fn((event: FormEvent) => event.preventDefault())
+    render(
+      <form onSubmit={onSubmit}>
+        <SearchField value="design" />
+        <button type="submit">Search</button>
+      </form>,
+    )
+
+    await userEvent.type(screen.getByRole("searchbox"), "{Enter}")
+
+    expect(onSubmit).toHaveBeenCalled()
   })
 })
 

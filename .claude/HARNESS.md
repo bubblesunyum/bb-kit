@@ -11,6 +11,7 @@
   scripts/context.py
   scripts/opencode-agents.py
   scripts/review.sh
+  scripts/shoot.mjs
   scripts/verify.sh
 -->
 
@@ -38,6 +39,13 @@ how the pieces fit together.
   diff, because a diff can't show you clipping. The packet carries untracked
   files too, and stages nothing to do it; its captures are dated from the
   working tree's first edit, so an unrelated session's screenshots stay out.
+- **Captures:** `scripts/shoot.mjs` is what writes those screenshots. Until it
+  existed nothing did — every packet said "None" and anything on screen
+  went to review unseen. It serves `storybook-static` and shoots each story in
+  the four-up layout, so one image carries all four palette-and-mode
+  combinations. With no argument it picks the stories whose files the change
+  touched. Playwright rather than the browser pane, because the pane cannot be
+  captured while it is hidden and returns solid black with no error.
 - **Librarian:** `.claude/agents/librarian` (sonnet) audits the knowledge layer
   from a digest, on a cadence, never on the hot path. It proposes; the calling
   session decides.

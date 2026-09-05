@@ -63,6 +63,10 @@ export const Sized: Story = {
         <Text tone="quiet" size="sm">lines 3, height 12px</Text>
         <Skeleton lines={3} height="12px" />
       </VStack>
+      <VStack gap={2}>
+        <Text tone="quiet" size="sm">lines 3, width 240px — the block narrows, the last line still ends short</Text>
+        <Skeleton lines={3} width={240} />
+      </VStack>
     </VStack>
   ),
 }

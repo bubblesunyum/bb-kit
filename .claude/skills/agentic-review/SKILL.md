@@ -12,8 +12,8 @@ the reasoning behind the code catch what you can't.
 ## The pass
 
 ```bash
-scripts/verify.sh            # 1. it has to build and pass tests first
-                             # 2. drive the app and capture it — see below
+scripts/verify.sh --full     # 1. it has to build and pass tests first
+node scripts/shoot.mjs       # 2. capture the stories it touched — see below
 scripts/review.sh            # 3. build the packet, prints its path
 ```
 
@@ -36,6 +36,14 @@ breakage instead of the design, so keep the order.
 `scripts/review.sh` collects the `/tmp/bbk-*.png` captures and lists them
 in the packet, so whatever you shot while verifying is what the design reviewer
 looks at. Shoot the screens the change touches, on every surface it ships to.
+
+`node scripts/shoot.mjs` is what writes them. With no argument it shoots the
+stories whose files this change touched; a word filters story ids
+(`node scripts/shoot.mjs badge`), and `--all` shoots everything. Each capture is
+one story in the four-up layout, so a single image carries all four
+palette-and-mode combinations. It reads `storybook-static`, so run
+`scripts/verify.sh --full` (or `npm run build-storybook`) first, or the shots
+are of the last build rather than of this change.
 
 For an uncommitted tree the window starts at the working tree's first edit, not
 at HEAD — HEAD can be days old, and a packet dated against it swept in whole
@@ -111,4 +119,4 @@ that's the pass that costs the least to run and catches what nothing else can.
 thorough than this. It's user-triggered and billed separately — mention it when
 a change genuinely warrants it, but never try to launch it yourself.
 
-<!-- tracks: scripts/review.sh .claude/agents/reviewer-taste.md .claude/agents/reviewer-correctness.md -->
+<!-- tracks: scripts/review.sh scripts/shoot.mjs .claude/agents/reviewer-taste.md .claude/agents/reviewer-correctness.md -->

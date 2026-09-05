@@ -72,6 +72,7 @@ work and spending the day's context learning one bit.
 Every change worth committing gets reviewed by agents that didn't write it:
 
 ```bash
+node scripts/shoot.mjs     # screenshots the stories this change touched
 scripts/review.sh          # builds the packet, prints its path
 ```
 

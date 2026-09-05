@@ -67,11 +67,23 @@ describe("lines, width and height", () => {
     expect(lines[0]).not.toHaveClass("h-4")
   })
 
-  test("width on a multi-line skeleton sizes the container, not each line", () => {
+  // width is the width of the whole skeleton, the same as it is for one bar.
+  test("width on a multi-line skeleton sizes the block, and the lines fill it", () => {
     const { container } = render(<Skeleton lines={2} width="240px" data-testid="skeleton" />)
 
     expect(screen.getByTestId("skeleton")).toHaveStyle({ width: "240px" })
-    expect(container.querySelectorAll('[data-slot="skeleton-line"]')[0]).not.toHaveStyle({ width: "240px" })
+    const lines = container.querySelectorAll('[data-slot="skeleton-line"]')
+    expect(lines[0]).toHaveClass("w-full")
+    expect(lines[0]).not.toHaveStyle({ width: "240px" })
+  })
+
+  // Setting a width used to square the last line off, so a narrow paragraph
+  // came out as identical bars and stopped reading as text.
+  test("a width does not straighten the short last line", () => {
+    const { container } = render(<Skeleton lines={3} width="240px" />)
+
+    const lines = container.querySelectorAll('[data-slot="skeleton-line"]')
+    expect(lines[2]).toHaveClass("w-3/4")
   })
 })
 

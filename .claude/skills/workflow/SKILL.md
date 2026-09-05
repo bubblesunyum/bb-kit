@@ -39,8 +39,8 @@ bd ready → claim → build → scripts/verify.sh → review → commit → clo
 3. **Build it.** Normal work, under the taste in CLAUDE.md.
 4. **Prove it.** `scripts/verify.sh` — the build and the tests behind one exit
    code; `--full` adds the slower checks. Don't ask the user to look at
-   something you can check yourself: if the project has a way to drive the real
-   app and screenshot it, that is the step, and it belongs in its own skill.
+   something you can check yourself: `node scripts/shoot.mjs` screenshots the
+   stories the change touched, and the `agentic-review` skill has the rest.
 5. **Review it.** `bd label add <id> review`, then `scripts/review.sh` runs the
    diff past an agent that didn't write it. See the `agentic-review` skill.
    `bd label remove <id> review` when the findings are dealt with.
