@@ -62,6 +62,42 @@ export const APostCard: Story = {
 }
 
 /**
+ * Hover, forced. The whole card takes the highlight tint, not just the title —
+ * the overlay makes every part of it the same link, so every part of it has to
+ * react. A card with no `CardLink` inside stays put, which is what the `:has()`
+ * in the tint is asking about.
+ */
+export const Hover: Story = {
+  render: () => (
+    <HStack align="stretch" gap={4}>
+      <Card className="max-w-56">
+        <CardTitle>
+          <H3 size="lg">
+            <CardLink href="#post">A card that is entirely a link</CardLink>
+          </H3>
+        </CardTitle>
+        <CardBody>
+          <Text tone="quiet" size="sm">
+            Quiet text stays quiet on the tint, and stays readable on it.
+          </Text>
+        </CardBody>
+      </Card>
+      <Card className="max-w-56">
+        <CardTitle>
+          <H3 size="lg">A card with no link in it</H3>
+        </CardTitle>
+        <CardBody>
+          <Text tone="quiet" size="sm">
+            Nothing here is clickable, so nothing here lights up.
+          </Text>
+        </CardBody>
+      </Card>
+    </HStack>
+  ),
+  parameters: { pseudo: { hover: ["[data-slot=card]"] } },
+}
+
+/**
  * Focus, forced. Tabbing to the card outlines the whole card rather than the
  * title text, because the ring goes on the overlay — and the overlay is the
  * thing that is actually clickable.

@@ -2,12 +2,14 @@ import type { ComponentProps } from "react"
 
 import { cn } from "@/lib/utils"
 
+import { LINK_HOST } from "./card-link"
 import { Surface } from "./surface"
 
 /**
  * A standalone box with content parts. It is a `Surface` with the raised form
- * as its default, laid out as a column, plus the one thing `CardLink` needs:
- * `position: relative`, so a link inside can stretch to cover the whole card.
+ * as its default, laid out as a column, plus what `CardLink` needs from the box
+ * around it — `position: relative` for the overlay, and the highlight tint
+ * while the pointer is anywhere over a card that is entirely a link.
  *
  * A card is a card wherever it is. A row inside a list is a `ListItem` — same
  * parts, different wrapper — because a list row is only valid inside a list.
@@ -18,10 +20,10 @@ export function Card({ variant = "raised", className, ...props }: CardProps) {
       variant={variant}
       {...props}
       data-slot="card"
-      /* relative lives here rather than on CardLink: put it on the link and the
-         stretched overlay would cover only the link's own box, which is exactly
-         the bug the technique exists to avoid. */
-      className={cn("relative flex flex-col gap-3", className)}
+      /* LINK_HOST lives here rather than on CardLink: put its `relative` on the
+         link and the stretched overlay would cover only the link's own box,
+         which is exactly the bug the technique exists to avoid. */
+      className={cn(LINK_HOST, "flex flex-col gap-3", className)}
     />
   )
 }

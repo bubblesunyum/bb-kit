@@ -21,7 +21,7 @@ export const palettes: Record<PaletteName, Palette> = {
     "highlight": { light: "#8DD6BA", dark: "#035541" },
     "text-on-highlight": { light: "#034937", dark: "#E1F4EC" },
     "border": { light: "#B8C0BD", dark: "#474F4C" },
-    "input-border": { light: "#4B5350", dark: "#828C88" },
+    "input-border": { light: "#697774", dark: "#828C88" },
     "focus-ring": { light: "#007C60", dark: "#C2E8D9" },
     "disabled-surface": { light: "#D2D9D6", dark: "#353D39" },
     "disabled-text": { light: "#7F8985", dark: "#6D7773" },
@@ -46,7 +46,7 @@ export const palettes: Record<PaletteName, Palette> = {
     "focus-ring": { light: "#FFB6A3", dark: "#963118" },
     "disabled-surface": { light: "#4F2E26", dark: "#E4CBC4" },
     "disabled-text": { light: "#7C625B", dark: "#A68B84" },
-    "danger": { light: "#F47C70", dark: "#AC1A1C" },
+    "danger": { light: "#F04C57", dark: "#AC1A1C" },
     "text-on-danger": { light: "#240705", dark: "#FEFBFA" },
   },
 }

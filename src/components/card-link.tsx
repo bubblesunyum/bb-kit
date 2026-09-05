@@ -55,3 +55,25 @@ type CardLinkProps = ComponentProps<"a"> & {
   /** Render the single child as the link — a framework's `<Link>`, usually. */
   asChild?: boolean
 }
+
+/**
+ * What a box hosting a `CardLink` wears. `Card` and `ListItem` both wear it,
+ * and nothing else should.
+ *
+ * `relative` gives the stretched overlay something to cover. The rest is the
+ * hover state: the whole box is one link, so the whole box has to answer to the
+ * pointer, and `:has()` asks whether there is a `CardLink` inside rather than
+ * making the caller say so.
+ *
+ * The tint paints the **highlight** pair, background and foreground together.
+ * The foreground half reaches only what inherits its colour — bare text in the
+ * box, and an icon drawn in `currentColor`. `Text` and the headings set their
+ * own role, so they keep it; what keeps *them* readable on the tint is §4.6,
+ * which checks quiet against highlight at 4.5.
+ */
+export const LINK_HOST = [
+  "relative",
+  "has-[[data-slot=card-link]]:hover:bg-highlight",
+  "has-[[data-slot=card-link]]:hover:text-text-on-highlight",
+  "transition-colors duration-120 ease-standard motion-reduce:transition-none",
+].join(" ")

@@ -3,6 +3,7 @@ import type { ComponentProps } from "react"
 
 import { cn } from "@/lib/utils"
 
+import { LINK_HOST } from "./card-link"
 import { Surface } from "./surface"
 
 /**
@@ -25,10 +26,10 @@ export function ListItem({ variant = "plain", asChild = false, className, ...pro
     <Surface
       asChild
       variant={variant}
-      /* relative for the same reason Card sets it: a CardLink inside a row has
-         to have something to cover, and a row is exactly as likely to be
-         entirely a link as a card is. */
-      className={cn("relative flex flex-col gap-2", className)}
+      /* LINK_HOST for the same reason Card wears it: a row is exactly as likely
+         to be entirely a link as a card is, so it needs both the overlay's
+         positioned ancestor and the hover tint that goes with one. */
+      className={cn(LINK_HOST, "flex flex-col gap-2", className)}
     >
       <Row {...props} data-slot="list-item" />
     </Surface>

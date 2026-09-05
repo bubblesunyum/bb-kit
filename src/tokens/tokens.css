@@ -15,7 +15,7 @@
   --highlight: light-dark(#8DD6BA, #035541);
   --text-on-highlight: light-dark(#034937, #E1F4EC);
   --border: light-dark(#B8C0BD, #474F4C);
-  --input-border: light-dark(#4B5350, #828C88);
+  --input-border: light-dark(#697774, #828C88);
   --focus-ring: light-dark(#007C60, #C2E8D9);
   --disabled-surface: light-dark(#D2D9D6, #353D39);
   --disabled-text: light-dark(#7F8985, #6D7773);
@@ -38,6 +38,6 @@
   --focus-ring: light-dark(#FFB6A3, #963118);
   --disabled-surface: light-dark(#4F2E26, #E4CBC4);
   --disabled-text: light-dark(#7C625B, #A68B84);
-  --danger: light-dark(#F47C70, #AC1A1C);
+  --danger: light-dark(#F04C57, #AC1A1C);
   --text-on-danger: light-dark(#240705, #FEFBFA);
 }

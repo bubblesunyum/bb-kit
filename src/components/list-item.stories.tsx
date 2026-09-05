@@ -70,8 +70,9 @@ export const Defaults: Story = {
 
 /**
  * A row is exactly as likely to be entirely a link as a card is, so the row is
- * positioned too and `CardLink` works inside it unchanged. Focus is forced
- * here: the ring lands on the row, not on the title.
+ * positioned too and `CardLink` works inside it unchanged. Two states are
+ * forced here: the ring on the first row lands on the row rather than the
+ * title, and the second row wears the highlight tint the pointer would give it.
  */
 export const ClickableRows: Story = {
   render: () => (
@@ -95,7 +96,9 @@ export const ClickableRows: Story = {
       ))}
     </ul>
   ),
-  parameters: { pseudo: { focusVisible: ["li:first-child a"] } },
+  parameters: {
+    pseudo: { focusVisible: ["li:first-child a"], hover: ["li:nth-child(2)"] },
+  },
 }
 
 /** Nothing may leave the row, however little or much is in it. */
