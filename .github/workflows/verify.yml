@@ -1,0 +1,33 @@
+# The same gate an agent runs locally, run again on the remote. It calls
+# scripts/verify.sh rather than listing build and test steps of its own, so the
+# check can never drift from the one the ledger says was run before a commit.
+name: verify
+
+# Branch pushes are covered by pull_request; an unfiltered `push` would fire a
+# second full run on the same commit whenever the branch has a PR open.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # --full drives a real browser: scripts/a11y.mjs sweeps axe over every
+      # story and scripts/shoot.mjs screenshots them, and neither works from
+      # the Playwright package alone.
+      - run: npx playwright install --with-deps chromium
+      - run: scripts/verify.sh --full
+      # The logs verify.sh swallows, kept for whoever reads a red run.
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: verify-logs
+          path: /tmp/bbk-verify/

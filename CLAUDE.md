@@ -196,6 +196,12 @@ v0 has almost nothing that moves — `Skeleton`, and whatever `Badge` and
 `Button` do on press. The values above are settled; the components that will
 use them mostly arrive later.
 
+So the hooks and wrappers described here **do not exist yet**, and building them
+before something needs them would be exactly the speculative API this kit avoids.
+The rule still binds: the first component that needs a real transition builds the
+primitive rather than writing the transition inline, and the reduced-motion media
+query lives inside that primitive so callers get it without remembering.
+
 ## Commits
 
 Lowercase, terse, plain English. No conventional-commit prefixes. Commit after

@@ -43,8 +43,12 @@ how the pieces fit together.
   existed nothing did — every packet said "None" and anything on screen
   went to review unseen. It serves `storybook-static` and shoots each story in
   the four-up layout, so one image carries all four palette-and-mode
-  combinations. With no argument it picks the stories whose files the change
-  touched. Playwright rather than the browser pane, because the pane cannot be
+  combinations. With no argument it picks the stories the change touched: the
+  story sharing a changed file's name in its own directory, or every story in
+  that directory when there is no namesake. Matching story files alone meant a
+  change to a component or to the token CSS captured nothing at all, which is
+  the same "went to review unseen" the script exists to end.
+  Playwright rather than the browser pane, because the pane cannot be
   captured while it is hidden and returns solid black with no error.
 - **Librarian:** `.claude/agents/librarian` (sonnet) audits the knowledge layer
   from a digest, on a cadence, never on the hot path. It proposes; the calling

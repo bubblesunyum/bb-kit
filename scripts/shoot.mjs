@@ -20,7 +20,7 @@
 import { execFileSync } from "node:child_process"
 import { createReadStream, existsSync, readFileSync } from "node:fs"
 import { createServer } from "node:http"
-import { extname, join, normalize } from "node:path"
+import { basename, dirname, extname, join, normalize } from "node:path"
 
 async function shoot(argument) {
   if (!existsSync(join(BUILD, "index.json"))) {
@@ -85,14 +85,40 @@ async function capture(page, base, story) {
  * Which stories to shoot. `--all` is every one; a plain word is a substring of
  * the id; nothing at all means the stories belonging to the files this change
  * touched, which is the case that should need no argument at all.
+ *
+ * A story counts as touched by more than its own file. Most changes edit a
+ * component or a token and not the story beside it, and matching story files
+ * alone meant those captured nothing at all — a change to the token CSS went to
+ * review unseen even though Tokens/Roles paints every one of its swatches. So a
+ * changed file also claims the story sharing its name in its own directory.
+ *
+ * A file with no namesake claims every story beside it, but only when it isn't
+ * a component: palette.ts has no palette.stories.tsx and is nonetheless what
+ * Tokens/Roles is a picture of, while a .tsx with no story of its own is not in
+ * Storybook at all and claiming its sixteen siblings would bury the capture
+ * that matters. Name a filter for those — `node scripts/shoot.mjs theme`.
  */
 function select(stories, argument) {
   if (argument === "--all") return stories
   if (argument) return stories.filter((story) => story.id.includes(argument))
 
-  const changed = new Set(changedFiles())
+  const changed = changedFiles().filter(Boolean)
   // index.json holds importPath as "./src/components/badge.stories.tsx".
-  return stories.filter((story) => changed.has(story.importPath.replace(/^\.\//, "")))
+  const pathOf = (story) => story.importPath.replace(/^\.\//, "")
+
+  const claimed = new Set()
+  for (const file of changed) {
+    const siblings = stories.filter((story) => dirname(pathOf(story)) === dirname(file))
+    const namesakes = siblings.filter((story) => stem(pathOf(story)) === stem(file))
+    const claims = namesakes.length > 0 ? namesakes : file.endsWith(".tsx") ? [] : siblings
+    for (const story of claims) claimed.add(story)
+  }
+  return stories.filter((story) => claimed.has(story))
+}
+
+/** Everything before the first dot: badge.test.tsx and badge.stories.tsx are both "badge". */
+function stem(file) {
+  return basename(file).split(".")[0]
 }
 
 /**

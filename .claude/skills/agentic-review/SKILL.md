@@ -38,7 +38,9 @@ in the packet, so whatever you shot while verifying is what the design reviewer
 looks at. Shoot the screens the change touches, on every surface it ships to.
 
 `node scripts/shoot.mjs` is what writes them. With no argument it shoots the
-stories whose files this change touched; a word filters story ids
+stories this change touched — a changed file claims the story sharing its name
+beside it, and every story in its directory when it has no namesake, so editing
+a component or the token CSS captures without your naming it. A word filters ids
 (`node scripts/shoot.mjs badge`), and `--all` shoots everything. Each capture is
 one story in the four-up layout, so a single image carries all four
 palette-and-mode combinations. It reads `storybook-static`, so run
