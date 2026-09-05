@@ -459,7 +459,7 @@ One green hue for the brand, and a near-grey built at the same hue with a trace 
 | Highlight | `#8DD6BA` | `#035541` |
 | Text on highlight | `#034937` | `#E1F4EC` |
 | Border | `#B8C0BD` | `#474F4C` |
-| Input border | `#4B5350` | `#828C88` |
+| Input border | `#697774` | `#828C88` |
 | Focus ring | `#007C60` | `#C2E8D9` |
 | Disabled surface | `#D2D9D6` | `#353D39` |
 | Disabled text | `#7F8985` | `#6D7773` |
@@ -468,7 +468,7 @@ One green hue for the brand, and a near-grey built at the same hue with a trace 
 
 **Every check in §4.6 passes in both modes.** Measured by the script, not transcribed by hand — regenerate the table from the script rather than editing it by hand, or the two drift.
 
-Some roles deliberately share a value: on a light page the input border and quiet text are the same hex — `#4B5350` in forest light, `#5F4741` in clash dark — and the disabled surface and muted surface are both `#D2D9D6`. That is an outcome, not an oversight — but it means changing one role by hand can move two things.
+Some roles deliberately share a value: the input border and quiet text are the same hex in clash dark (`#5F4741`), and the disabled surface and muted surface are both `#D2D9D6` in forest light. That is an outcome, not an oversight — but it means changing one role by hand can move two things.
 
 **The dark border was `#424A47` in r5 and failed.** Against the dark muted surface it measured 1.226, under a 1.25 floor — and r5 claimed every check passed. `#474F4C` clears it at 1.33 and still passes against page (2.26) and card (1.83). Do not fix a failure like this by lowering the threshold; the point of §4.6 is that thresholds are set before the colors are.
 
@@ -476,9 +476,9 @@ Some roles deliberately share a value: on a light page the input border and quie
 
 **The dark focus ring is a pale mint, not the primary colour.** In r4 they were the same hex, which made a focused primary button's ring invisible if the ring were ever drawn inside the control. The outline technique in §5.6 makes that moot, but two roles sharing a hex when one exists to contrast with the other is asking for trouble later.
 
-**Known open item:** the light-mode input border (`#4B5350`) measures about 6.7 against the page where 3.0 is required. It is safe but visually heavy — a noticeably dark outline on every text field. Worth softening once you can see it on a real page. Anything above 3.0 is fine.
+**The light input border was softened in step 4.5** (bbk-4mr). `#4B5350` measured about 6.7 against the page where 3.0 is required — safe, but a noticeably dark outline on every text field. `#697774` reads as a hairline and still clears every floor: 3.94 against the page, 4.67 against a card, 3.26 against the muted surface. The muted surface is the one that binds; there is not much further to go.
 
-**A selected filter tag is filled with the primary color, not the highlight.** No pale tint can reach 3:1 against the page — the highlight tops out near 1.2 before it stops looking like a tint. Since a selected tag communicates the state of a control, it needs 3:1. A primary fill measures about 6.3 in light and 8.1 in dark. The highlight stays what it is good for: hover and gentle emphasis.
+**A selected filter tag is filled with the primary color, not the highlight.** No pale tint can reach 3:1 against the page — the highlight tops out near 1.2 before it stops looking like a tint. Since a selected tag communicates the state of a control, it needs 3:1. A primary fill measures about 6.3 in light and 8.1 in dark. The highlight stays what it is good for: hover and gentle emphasis. In v0 the thing that paints it is `LINK_HOST` (bbk-jl1) — a card or row that has a `CardLink` inside takes the tint while the pointer is over it, because the whole box is one link.
 
 **An unselected tag is outlined** — border and text, no fill. So selected and unselected differ by fill, by text color and by weight, not by hue alone, which is what someone who cannot distinguish the colors needs.
 
@@ -508,10 +508,12 @@ Not a product. A test, per §4.5. Warm hue 35 throughout (danger at 27), high co
 | Focus ring | `#FFB6A3` | `#963118` |
 | Disabled surface | `#4F2E26` | `#E4CBC4` |
 | Disabled text | `#7C625B` | `#A68B84` |
-| Danger | `#F47C70` | `#AC1A1C` |
+| Danger | `#F04C57` | `#AC1A1C` |
 | Text on danger | `#240705` | `#FEFBFA` |
 
 **Every §4.6 check passes, in both modes.** Measured, not assumed. A test palette that cannot satisfy the contract would not be testing the contract.
+
+**Danger was re-picked in step 4.5** (bbk-abw). It started as `#F47C70`, a salmon 1.68 from the peach primary in light mode, so a Delete button was indistinguishable from a Publish one — contrast was never the problem, the two roles were. `#F04C57` is a redder, more saturated red at 2.28 from the primary, 4.39 against the page and 3.36 against a card. §4.6 has no row for one role against another, which is exactly the kind of thing looking at it catches and the table cannot.
 
 Note what it inverts and what it does not. Primary is *light* in light mode and *dark* in dark mode — the opposite of the default palette in both. Page and card swap the same way. That is what catches a component with `bg-white` baked in, or one assuming the primary colour is the dark one.
 
