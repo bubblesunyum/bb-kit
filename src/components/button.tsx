@@ -102,5 +102,5 @@ const VARIANTS = {
   ghost: "text-text hover:bg-muted",
   link: "text-primary underline-offset-4 hover:underline",
   danger:
-    "bg-danger text-text-on-danger hover:bg-danger/90 active:bg-danger/80 disabled:bg-disabled-surface",
+    "bg-danger-surface text-text-on-danger hover:bg-danger-surface/90 active:bg-danger-surface/80 disabled:bg-disabled-surface",
 } as const

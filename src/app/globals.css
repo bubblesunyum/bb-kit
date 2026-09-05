@@ -46,12 +46,14 @@
   --color-disabled-surface: var(--disabled-surface);
   --color-disabled-text: var(--disabled-text);
   --color-danger: var(--danger);
+  --color-danger-surface: var(--danger-surface);
   --color-text-on-danger: var(--text-on-danger);
 
   /* Aliases so a dropped-in shadcn component finds the names it expects. They
      must be spelled --color-*: a bare `--background: var(--page)` generates no
      utility and reports nothing. secondary is the muted pair, popover is card,
-     accent is highlight, destructive is danger. */
+     accent is highlight, destructive is the danger surface — shadcn's destructive
+     is always a fill, never ink. */
   --color-background: var(--page);
   --color-foreground: var(--text);
   --color-card-foreground: var(--text);
@@ -63,7 +65,7 @@
   --color-muted-foreground: var(--quiet);
   --color-accent: var(--highlight);
   --color-accent-foreground: var(--text-on-highlight);
-  --color-destructive: var(--danger);
+  --color-destructive: var(--danger-surface);
   --color-destructive-foreground: var(--text-on-danger);
   --color-input: var(--input-border);
   --color-ring: var(--focus-ring);

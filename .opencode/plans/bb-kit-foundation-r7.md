@@ -353,7 +353,7 @@ Two more lines that are easy to miss:
 
   Confirm the exact shape against the current shadcn v4 setup in Step 0.
 
-  **Two of shadcn's roles have nothing to point at.** It expects `secondary` and `destructive`, each with a `-foreground` partner. `destructive` maps to the **danger** pair in §5.1, which exists for exactly this reason. `secondary` maps to the muted surface pair, `popover` to card, and `accent` to highlight.
+  **Two of shadcn's roles have nothing to point at.** It expects `secondary` and `destructive`, each with a `-foreground` partner. `destructive` maps to **danger surface** and **text on danger** in §5.1 — a shadcn `destructive` is always a fill — and `destructive` used as a text colour maps to plain **danger**. `secondary` maps to the muted surface pair, `popover` to card, and `accent` to highlight.
 
 **Verify in Step 2**, before any component exists:
 
@@ -424,8 +424,9 @@ One function, used by the test now and the color explorer later (§10), so the t
 | Highlight against page, against card, against muted surface | 1.15 | hover has to be perceptible |
 | Card against page | 1.15 | see the note below |
 | Disabled text against disabled surface | 2.0 | the pair that actually occurs |
-| Text on danger, against Danger | 4.5 | error buttons |
-| Danger against page, against card | 3.0 | error states carry meaning |
+| Text on danger, against Danger surface | 4.5 | error buttons |
+| Danger against page, against card | 4.5 | it is a text colour |
+| Danger surface against page, against card | 3.0 | error states carry meaning |
 | Primary against muted surface | 3.0 | a selected tag inside a panel |
 | Focus ring against muted surface | 3.0 | a focused control inside a panel |
 
@@ -464,6 +465,7 @@ One green hue for the brand, and a near-grey built at the same hue with a trace 
 | Disabled surface | `#D2D9D6` | `#353D39` |
 | Disabled text | `#7F8985` | `#6D7773` |
 | Danger | `#AC1A1C` | `#F47C70` |
+| Danger surface | `#AC1A1C` | `#F47C70` |
 | Text on danger | `#FFFFFF` | `#00160F` |
 
 **Every check in §4.6 passes in both modes.** Measured by the script, not transcribed by hand — regenerate the table from the script rather than editing it by hand, or the two drift.
@@ -472,7 +474,9 @@ Some roles deliberately share a value: the input border and quiet text are the s
 
 **The dark border was `#424A47` in r5 and failed.** Against the dark muted surface it measured 1.226, under a 1.25 floor — and r5 claimed every check passed. `#474F4C` clears it at 1.33 and still passes against page (2.26) and card (1.83). Do not fix a failure like this by lowering the threshold; the point of §4.6 is that thresholds are set before the colors are.
 
-**Danger is a new role in r6**, added because shadcn components expect one and because a kit with no error colour will want one within a month. Light is a deep red with white text (7.18); dark is a soft coral with dark ink (7.08). Both clear 3.0 against page and card.
+**Danger is a new role in r6**, added because shadcn components expect one and because a kit with no error colour will want one within a month. Light is a deep red with white text (7.18); dark is a soft coral with dark ink (7.08).
+
+**Danger is two roles as of bbk-ejv**, because it is asked to do two jobs a single value cannot always do: **Danger** is ink — `Text tone='danger'`, a `List` error — and so must clear 4.5 against page and card, while **Danger surface** is a fill under `Text on danger` and need only clear 3.0. Forest has room for one value to be both, and both columns above hold the same colour. Clash does not — see §5.2.
 
 **The dark focus ring is a pale mint, not the primary colour.** In r4 they were the same hex, which made a focused primary button's ring invisible if the ring were ever drawn inside the control. The outline technique in §5.6 makes that moot, but two roles sharing a hex when one exists to contrast with the other is asking for trouble later.
 
@@ -508,12 +512,15 @@ Not a product. A test, per §4.5. Warm hue 35 throughout (danger at 27), high co
 | Focus ring | `#FFB6A3` | `#963118` |
 | Disabled surface | `#4F2E26` | `#E4CBC4` |
 | Disabled text | `#7C625B` | `#A68B84` |
-| Danger | `#F04C57` | `#AC1A1C` |
+| Danger | `#F87C89` | `#AC1A1C` |
+| Danger surface | `#F04C57` | `#AC1A1C` |
 | Text on danger | `#240705` | `#FEFBFA` |
 
 **Every §4.6 check passes, in both modes.** Measured, not assumed. A test palette that cannot satisfy the contract would not be testing the contract.
 
-**Danger was re-picked in step 4.5** (bbk-abw). It started as `#F47C70`, a salmon 1.68 from the peach primary in light mode, so a Delete button was indistinguishable from a Publish one — contrast was never the problem, the two roles were. `#F04C57` is a redder, more saturated red at 2.28 from the primary, 4.39 against the page and 3.36 against a card. §4.6 has no row for one role against another, which is exactly the kind of thing looking at it catches and the table cannot.
+**Danger is why the role was split** (bbk-abw, then bbk-ejv). It started as `#F47C70`, a salmon 1.68 from the peach primary in light mode, so a Delete button was indistinguishable from a Publish one — contrast was never the problem, the two roles were. `#F04C57` fixed that at 2.28 from the primary, and then failed 4.5 against a card (3.36) the moment the a11y sweep checked it as text. Clash light has a dark page and a light primary, so no single red can be both a warning and readable ink: the two are at most about 1.65 apart in luminance whatever the hue.
+
+So the fill keeps `#F04C57` — a real red, 4.39 against the page and 3.36 against a card — and the ink is `#F87C89`, a rose at 4.70 against a card. §4.6 has no row for one role against another, which is exactly the kind of thing looking at it catches and the table cannot.
 
 Note what it inverts and what it does not. Primary is *light* in light mode and *dark* in dark mode — the opposite of the default palette in both. Page and card swap the same way. That is what catches a component with `bg-white` baked in, or one assuming the primary colour is the dark one.
 

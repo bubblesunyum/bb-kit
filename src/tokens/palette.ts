@@ -26,6 +26,7 @@ export const palettes: Record<PaletteName, Palette> = {
     "disabled-surface": { light: "#D2D9D6", dark: "#353D39" },
     "disabled-text": { light: "#7F8985", dark: "#6D7773" },
     "danger": { light: "#AC1A1C", dark: "#F47C70" },
+    "danger-surface": { light: "#AC1A1C", dark: "#F47C70" },
     "text-on-danger": { light: "#FFFFFF", dark: "#00160F" },
   },
   // Not a product — a test. Warm, loud, and inverted in both modes: light mode
@@ -46,7 +47,11 @@ export const palettes: Record<PaletteName, Palette> = {
     "focus-ring": { light: "#FFB6A3", dark: "#963118" },
     "disabled-surface": { light: "#4F2E26", dark: "#E4CBC4" },
     "disabled-text": { light: "#7C625B", dark: "#A68B84" },
+    // The one palette where the split earns itself: light mode has a dark page
+    // and a peach primary, so a red that clears 4.5 as text has to be pale, and
+    // a red that reads as a warning has to be strong. Neither value can be both.
     "danger": { light: "#F87C89", dark: "#AC1A1C" },
+    "danger-surface": { light: "#F04C57", dark: "#AC1A1C" },
     "text-on-danger": { light: "#240705", dark: "#FEFBFA" },
   },
 }
@@ -76,6 +81,7 @@ export const ROLES = [
   "disabled-surface",
   "disabled-text",
   "danger",
+  "danger-surface",
   "text-on-danger",
 ] as const
 

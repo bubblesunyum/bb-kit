@@ -43,7 +43,7 @@ describe("the four forms", () => {
     )
 
     expect(screen.getByRole("button", { name: "primary" })).toHaveClass("bg-primary")
-    expect(screen.getByRole("button", { name: "danger" })).toHaveClass("bg-danger")
+    expect(screen.getByRole("button", { name: "danger" })).toHaveClass("bg-danger-surface")
     expect(screen.getByRole("button", { name: "ghost" })).not.toHaveClass("bg-primary")
     expect(screen.getByRole("button", { name: "link" })).not.toHaveClass("bg-primary")
   })

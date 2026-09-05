@@ -86,7 +86,7 @@ export const Tones: Story = {
       <div className="bg-primary rounded-md p-3">
         <Text tone="on-primary">on-primary — text on the primary fill</Text>
       </div>
-      <div className="bg-danger rounded-md p-3">
+      <div className="bg-danger-surface rounded-md p-3">
         <Text tone="on-danger">on-danger — text on the danger fill</Text>
       </div>
     </div>

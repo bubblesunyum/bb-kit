@@ -20,6 +20,7 @@
   --disabled-surface: light-dark(#D2D9D6, #353D39);
   --disabled-text: light-dark(#7F8985, #6D7773);
   --danger: light-dark(#AC1A1C, #F47C70);
+  --danger-surface: light-dark(#AC1A1C, #F47C70);
   --text-on-danger: light-dark(#FFFFFF, #00160F);
 }
 
@@ -39,5 +40,6 @@
   --disabled-surface: light-dark(#4F2E26, #E4CBC4);
   --disabled-text: light-dark(#7C625B, #A68B84);
   --danger: light-dark(#F87C89, #AC1A1C);
+  --danger-surface: light-dark(#F04C57, #AC1A1C);
   --text-on-danger: light-dark(#240705, #FEFBFA);
 }
