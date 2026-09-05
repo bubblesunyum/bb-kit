@@ -100,6 +100,12 @@ if [ "$mode" = "--full" ]; then
   # has shipped nothing. Playwright screenshots join this once components
   # settle (plan §7.4).
   has_script build-storybook && step "storybook" npm run build-storybook
+
+  # axe over every story in all four palette-and-mode combinations. Reads the
+  # static build the step above just made, so it goes after it — and it is here
+  # rather than in the default run because it needs that build.
+  step "a11y" node scripts/a11y.mjs
+
   has_script "test:e2e" && step "e2e" npm run test:e2e
 fi
 

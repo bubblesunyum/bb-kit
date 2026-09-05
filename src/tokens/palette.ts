@@ -46,7 +46,7 @@ export const palettes: Record<PaletteName, Palette> = {
     "focus-ring": { light: "#FFB6A3", dark: "#963118" },
     "disabled-surface": { light: "#4F2E26", dark: "#E4CBC4" },
     "disabled-text": { light: "#7C625B", dark: "#A68B84" },
-    "danger": { light: "#F04C57", dark: "#AC1A1C" },
+    "danger": { light: "#F87C89", dark: "#AC1A1C" },
     "text-on-danger": { light: "#240705", dark: "#FEFBFA" },
   },
 }

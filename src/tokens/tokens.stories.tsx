@@ -53,7 +53,7 @@ function Swatches() {
 }
 
 const BUTTON = cn(
-  "bg-primary text-on-primary rounded-md px-4 py-2",
-  "hover:bg-highlight hover:text-on-highlight",
+  "bg-primary text-text-on-primary rounded-md px-4 py-2",
+  "hover:bg-highlight hover:text-text-on-highlight",
   "focus-visible:outline-focus-ring focus-visible:outline-2 focus-visible:outline-offset-2",
 )

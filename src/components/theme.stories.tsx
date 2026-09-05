@@ -64,7 +64,11 @@ export const OpacityModifier: Story = {
   render: (args) => (
     <Theme {...args} className="flex gap-3 p-6">
       {["bg-primary", "bg-primary/75", "bg-primary/50", "bg-primary/25"].map((utility) => (
-        <div key={utility} className={cn(utility, "text-on-primary rounded-md px-4 py-6 text-sm")}>
+        /* The label sits under the swatch rather than on it. A faded fill
+           cannot carry readable text — that is the point of the ramp — so a
+           label inside would be a contrast failure the story caused. */
+        <div key={utility} className="flex flex-col gap-2 text-sm">
+          <div className={cn(utility, "h-16 rounded-md")} />
           {utility}
         </div>
       ))}

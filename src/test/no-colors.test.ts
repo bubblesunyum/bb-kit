@@ -21,7 +21,7 @@ describe("the detector", () => {
   test.each([
     "bg-card text-text",
     "border-border ring-focus-ring",
-    "bg-primary/50 text-on-primary",
+    "bg-primary/50 text-text-on-primary",
     "text-quiet hover:bg-highlight",
     // The role names are ordinary words, and two of them collide with utilities
     // that also take a colour. Neither is a palette name, so neither may trip.

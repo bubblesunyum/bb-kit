@@ -36,7 +36,7 @@ export function PostCard({ post }: PostProps) {
         {/* The link goes in the title, never the footer: the overlay covers the
             nearest positioned ancestor, and CardFooter is positioned. */}
         <H3 size="lg">
-          <CardLink href={post.href}>{post.title}</CardLink>
+          <CardLink href={post.href}>{post.title || UNTITLED}</CardLink>
         </H3>
         <PostDate date={post.date} />
       </CardTitle>
@@ -76,7 +76,7 @@ export function PostRow({ post }: PostProps) {
 
       <VStack gap={2} className="min-w-0 flex-1">
         <H3 size="base">
-          <CardLink href={post.href}>{post.title}</CardLink>
+          <CardLink href={post.href}>{post.title || UNTITLED}</CardLink>
         </H3>
         <PostDate date={post.date} />
         <Text tone="quiet" size="sm">
@@ -140,3 +140,8 @@ export type Post = {
 type PostProps = { post: Post }
 
 const DATES = new Intl.DateTimeFormat("en-GB", { dateStyle: "medium", timeZone: "UTC" })
+
+// A post with no title would otherwise render an empty heading wrapped around a
+// link with no accessible name — in the tab order, and unreachable by anyone
+// who cannot see where it is. Caught by the a11y sweep, not by looking.
+const UNTITLED = "Untitled"

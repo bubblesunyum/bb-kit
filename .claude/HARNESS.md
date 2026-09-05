@@ -46,7 +46,10 @@ how the pieces fit together.
   opencode's dialect by `scripts/opencode-agents.py`. See below — two of the
   obvious moves here are traps.
 - **Gate:** `scripts/verify.sh` — build, tests, optional smoke, plus doc
-  staleness. Tiny output on purpose.
+  staleness. Tiny output on purpose. `--full` also builds Storybook and then
+  runs `scripts/a11y.mjs` over that build: axe against every story in all four
+  palette-and-mode combinations, which is the only thing that sees a colour
+  failure §4.6's token pairs cannot predict.
 - **Dashboard:** `scripts/dashboard.py` serves a live diagram at localhost:7391.
   It never opens a browser itself. It publishes the live port to
   `.claude/launch.json` and prints the link with the instruction to open it in

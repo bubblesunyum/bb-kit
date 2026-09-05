@@ -59,7 +59,8 @@ itself in `bd remember`.
 ```bash
 scripts/verify.sh          # build + tests
 scripts/verify.sh --quick  # build only
-scripts/verify.sh --full   # + slow checks and any smoke run
+scripts/verify.sh --full   # + Storybook, and axe over every story in all four
+                           #   palette-and-mode combinations
 ```
 
 Run this rather than raw build commands. It swallows tens of thousands of log
