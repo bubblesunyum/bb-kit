@@ -82,6 +82,7 @@ const CHECKS: readonly [Role, Role, number][] = [
   ["danger", "card", 3.0],
   ["input-border", "page", 3.0],
   ["input-border", "card", 3.0],
+  ["input-border", "muted", 3.0],
   ["focus-ring", "page", 3.0],
   ["focus-ring", "card", 3.0],
   ["focus-ring", "muted", 3.0],
@@ -90,6 +91,7 @@ const CHECKS: readonly [Role, Role, number][] = [
   ["border", "muted", 1.25],
   ["highlight", "page", 1.15],
   ["highlight", "card", 1.15],
+  ["highlight", "muted", 1.15],
   ["card", "page", 1.15],
   ["disabled-text", "disabled-surface", 2.0],
 ]

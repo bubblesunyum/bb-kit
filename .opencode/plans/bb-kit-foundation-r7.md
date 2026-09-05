@@ -417,11 +417,11 @@ One function, used by the test now and the color explorer later (§10), so the t
 | Text on a primary fill | 4.5 | button labels |
 | Text on a highlight | 4.5 | hovered rows |
 | Primary against page, against card | 3.0 | a selected filter tag carries state |
-| Input border against page, against card | 3.0 | WCAG 1.4.11 |
+| Input border against page, against card, against muted surface | 3.0 | WCAG 1.4.11 |
 | Focus ring against page, against card | 3.0 | see the note below |
 | Border against page, against card | 1.4 | a hairline you can see |
 | Border against muted surface | 1.25 | deliberately fainter; a separator inside a panel |
-| Highlight against page, against card | 1.15 | hover has to be perceptible |
+| Highlight against page, against card, against muted surface | 1.15 | hover has to be perceptible |
 | Card against page | 1.15 | see the note below |
 | Disabled text against disabled surface | 2.0 | the pair that actually occurs |
 | Text on danger, against Danger | 4.5 | error buttons |
@@ -452,14 +452,14 @@ One green hue for the brand, and a near-grey built at the same hue with a trace 
 | Page | `#E7EDEA` | `#0C110F` |
 | Card | `#FFFFFF` | `#1F2623` |
 | Text | `#0C110F` | `#F2F6F4` |
-| Quiet text | `#4F5854` | `#B8C0BD` |
+| Quiet text | `#4B5350` | `#B8C0BD` |
 | Muted surface | `#D2D9D6` | `#353D39` |
 | Primary | `#03614B` | `#57BA9A` |
 | Text on primary | `#FFFFFF` | `#00160F` |
-| Highlight | `#B4E4D2` | `#035541` |
+| Highlight | `#8DD6BA` | `#035541` |
 | Text on highlight | `#034937` | `#E1F4EC` |
 | Border | `#B8C0BD` | `#474F4C` |
-| Input border | `#4F5854` | `#6D7773` |
+| Input border | `#4B5350` | `#828C88` |
 | Focus ring | `#007C60` | `#C2E8D9` |
 | Disabled surface | `#D2D9D6` | `#353D39` |
 | Disabled text | `#7F8985` | `#6D7773` |
@@ -468,7 +468,7 @@ One green hue for the brand, and a near-grey built at the same hue with a trace 
 
 **Every check in §4.6 passes in both modes.** Measured by the script, not transcribed by hand — regenerate the table from the script rather than editing it by hand, or the two drift.
 
-Some roles deliberately share a value: in light mode the input border and quiet text are both `#4F5854`, and the disabled surface and muted surface are both `#D2D9D6`. That is an outcome, not an oversight — but it means changing one role by hand can move two things.
+Some roles deliberately share a value: on a light page the input border and quiet text are the same hex — `#4B5350` in forest light, `#5F4741` in clash dark — and the disabled surface and muted surface are both `#D2D9D6`. That is an outcome, not an oversight — but it means changing one role by hand can move two things.
 
 **The dark border was `#424A47` in r5 and failed.** Against the dark muted surface it measured 1.226, under a 1.25 floor — and r5 claimed every check passed. `#474F4C` clears it at 1.33 and still passes against page (2.26) and card (1.83). Do not fix a failure like this by lowering the threshold; the point of §4.6 is that thresholds are set before the colors are.
 
@@ -476,7 +476,7 @@ Some roles deliberately share a value: in light mode the input border and quiet 
 
 **The dark focus ring is a pale mint, not the primary colour.** In r4 they were the same hex, which made a focused primary button's ring invisible if the ring were ever drawn inside the control. The outline technique in §5.6 makes that moot, but two roles sharing a hex when one exists to contrast with the other is asking for trouble later.
 
-**Known open item:** the light-mode input border (`#4F5854`) measures about 6.2 against the page where 3.0 is required. It is safe but visually heavy — a noticeably dark outline on every text field. Worth softening once you can see it on a real page. Anything above 3.0 is fine.
+**Known open item:** the light-mode input border (`#4B5350`) measures about 6.7 against the page where 3.0 is required. It is safe but visually heavy — a noticeably dark outline on every text field. Worth softening once you can see it on a real page. Anything above 3.0 is fine.
 
 **A selected filter tag is filled with the primary color, not the highlight.** No pale tint can reach 3:1 against the page — the highlight tops out near 1.2 before it stops looking like a tint. Since a selected tag communicates the state of a control, it needs 3:1. A primary fill measures about 6.3 in light and 8.1 in dark. The highlight stays what it is good for: hover and gentle emphasis.
 
@@ -497,14 +497,14 @@ Not a product. A test, per §4.5. Warm hue 35 throughout (danger at 27), high co
 | Page | `#371C15` | `#F5E4DF` |
 | Card | `#4F2E26` | `#FEFBFA` |
 | Text | `#FDF2F0` | `#29140F` |
-| Quiet text | `#C3ABA4` | `#6F534C` |
+| Quiet text | `#C3ABA4` | `#5F4741` |
 | Muted surface | `#220D08` | `#E4CBC4` |
 | Primary | `#FFC0AF` | `#812E19` |
 | Text on primary | `#2E110A` | `#FEF7F5` |
-| Highlight | `#5F362B` | `#F9CBBF` |
+| Highlight | `#5F362B` | `#F6AF9D` |
 | Text on highlight | `#FCEEEB` | `#522C22` |
 | Border | `#7B5A52` | `#C4AAA4` |
-| Input border | `#AE9089` | `#6F534C` |
+| Input border | `#AE9089` | `#5F4741` |
 | Focus ring | `#FFB6A3` | `#963118` |
 | Disabled surface | `#4F2E26` | `#E4CBC4` |
 | Disabled text | `#7C625B` | `#A68B84` |
