@@ -4,7 +4,7 @@
 #
 #   scripts/review.sh                 # working tree vs HEAD
 #   scripts/review.sh HEAD~3          # since a commit
-#   scripts/review.sh master          # since a branch (use on a feature branch)
+#   scripts/review.sh main            # since a branch (use on a feature branch)
 #
 # Prints the packet path. Hand that to the reviewer agents — see the
 # agentic-review skill.

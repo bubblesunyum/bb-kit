@@ -12,7 +12,7 @@
     "scripts/brief.sh": "bcbedff2c42c44ad",
     "scripts/context.py": "610d92ea284ed318",
     "scripts/opencode-agents.py": "5e28af95787ef261",
-    "scripts/review.sh": "593dd3869010caf5",
+    "scripts/review.sh": "ff3da6c9ec590cb4",
     "scripts/shoot.mjs": "dda18360272c539d",
     "scripts/verify.sh": "53f8e3699226eadd"
   },
@@ -20,7 +20,7 @@
     ".claude/agents/reviewer-correctness.md": "970cbf5af5aadf03",
     ".claude/agents/reviewer-taste.md": "5e41cea7ca8ffc0b",
     "doc": "caf7d602eb7c298a",
-    "scripts/review.sh": "593dd3869010caf5",
+    "scripts/review.sh": "ff3da6c9ec590cb4",
     "scripts/shoot.mjs": "dda18360272c539d"
   },
   ".claude/skills/handoff/SKILL.md": {
@@ -34,7 +34,7 @@
   "AGENTS.md": {
     "doc": "51174e92f85cf3b7",
     "scripts/brief.sh": "bcbedff2c42c44ad",
-    "scripts/review.sh": "593dd3869010caf5",
+    "scripts/review.sh": "ff3da6c9ec590cb4",
     "scripts/verify.sh": "53f8e3699226eadd"
   }
 }
