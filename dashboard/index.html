@@ -822,6 +822,51 @@
         background: color-mix(in srgb, var(--ink) 8%, transparent);
         color: var(--dim);
       }
+      /* The bead's last three characters, so a card can be named out loud.
+      Monospace and un-uppercased: it reads as an id, not a status. Born
+      borderless — the id leads the row as flat text, ahead of the priority. */
+      .chip.id {
+        flex-shrink: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-weight: 400;
+        text-transform: none;
+        letter-spacing: 0;
+        background: none;
+        color: var(--dim);
+      }
+      /* A parent's inline children: the same rows, told apart by a darker
+      fill rather than an indent. */
+      .card.kid {
+        background: var(--bg);
+      }
+      .card.kid:hover {
+        background: color-mix(in srgb, var(--accent) 16%, transparent);
+      }
+      /* The expander lives last in the card's flex row, so it sits at the far
+      edge whatever the title and the meta do. A span, not a button: a button
+      inside the card's own button is invalid HTML. The click handler claims a
+      press on it before the sheet ever sees it, and arrows toggle it from the
+      keyboard, so it needs no tab stop of its own. */
+      .card .caret {
+        flex: none;
+        align-self: center;
+        color: var(--dim);
+        font-size: 11px;
+        line-height: 1;
+        padding: 3px 5px;
+        border-radius: 6px;
+        transition:
+          transform 0.2s ease,
+          color 0.15s,
+          background 0.15s;
+      }
+      .card .caret:hover {
+        color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 14%, transparent);
+      }
+      .card[aria-expanded='true'] .caret {
+        transform: rotate(180deg);
+      }
       .waits {
         color: var(--fail);
       }
@@ -1639,6 +1684,11 @@
       const laneLimits = {}
       const LANE_PAGE = 8
 
+      /* Which parents are expanded inline by the caret on their row. In memory
+      beside the folds above, so a polling repaint keeps them open; everything
+      starts collapsed on load. */
+      const expandedEpics = new Set()
+
       /* Run buttons are described once, in TASKS in scripts/dashboard.py, and
          arrive here inside the state with their label and their placement. The
          page draws slots; it never names a task. */
@@ -1674,14 +1724,18 @@
         return `In-progress beads with commits ready to push: ${open.join(', ')}`
       }
 
-      function beadCard(i) {
+      function beadCard(i, kid = false) {
         const waiting = (i.deps || []).filter((x) => {
           const dep = ledger.byId[x]
           return dep && dep.status !== 'closed'
         })
         const kids = i.children || []
         const parent = ledger.epicName(i.parent)
-        return `<button class="card" data-bead="${esc(i.id)}">
+        const hasKids = kids.length > 0
+        const open = hasKids && expandedEpics.has(i.id)
+        return `<button class="card${kid ? ' kid' : ''}" data-bead="${esc(i.id)}"
+          ${hasKids ? `data-has-kids aria-expanded="${open}"` : ''}>
+          <span class="chip id" title="${esc(i.id)}">${esc(i.id.slice(-3))}</span>
           <span class="chip prio">P${esc(i.priority)}</span>
           <b>${esc(i.title)}</b>
           <div class="meta">
@@ -1691,7 +1745,33 @@
             ${i.commit_count ? `<span>${i.commit_count} commit${i.commit_count === 1 ? '' : 's'}</span>` : ''}
             ${waiting.length ? `<span class="waits">waits on ${waiting.map(esc).join(', ')}</span>` : ''}
           </div>
+          ${hasKids ? `<span class="caret" data-expand="${esc(i.id)}" aria-hidden="true" title="${open ? 'Hide' : 'Show'} sub-beads">▾</span>` : ''}
         </button>`
+      }
+
+      /* A parent's children inline: the same rows, as flat siblings of the
+      parent rather than indented ones, told apart by the darker fill.
+      Depth-first, so a child that is itself a parent carries its own subtree
+      right under it. Shown wherever the parent is shown, whatever lane the
+      children would otherwise belong to — expansion is about the family, not
+      the filter. The seen set keeps a bead that is both listed and nested
+      (the backlog names children outright) to its first appearance. */
+      function renderTree(list) {
+        const out = []
+        const seen = new Set()
+        const walk = (i, kid) => {
+          if (!i || seen.has(i.id)) return
+          seen.add(i.id)
+          out.push(beadCard(i, kid))
+          if (!expandedEpics.has(i.id)) return
+          ;(i.children || [])
+            .map((id) => ledger.byId[id])
+            .filter(Boolean)
+            .sort((a, b) => a.priority - b.priority)
+            .forEach((k) => walk(k, true))
+        }
+        list.forEach((i) => walk(i, false))
+        return out.join('')
       }
 
       /* The last ledger the board was drawn from, so a press that only changes how
@@ -1823,7 +1903,7 @@
             </summary>
             <div class="lane-cards">
               ${l.note ? `<p class="lane-note">${esc(l.note)}</p>` : ''}
-              ${shown.map(beadCard).join('')}
+              ${renderTree(shown)}
               ${
                 rest > 0
                   ? `<button class="load-more" data-more="${esc(l.key)}">
@@ -1843,13 +1923,17 @@
           // bd returns no meaningful order, so the strip reads down by priority —
           // otherwise "first" would change between polls.
           .sort((a, b) => a.priority - b.priority || String(a.created_at).localeCompare(String(b.created_at)))
-        const signature = JSON.stringify(items.map((i) => i.id + i.title + i.priority))
+        const signature = JSON.stringify([items.map((i) => [i.id, i.title, i.priority, i.status,
+          (i.labels || []).join(','), (i.children || []).join(',')]), [...expandedEpics].sort()])
         if (signature === backlogSignature) return
         backlogSignature = signature
 
         $('backlog').hidden = !items.length
         $('backlogCount').textContent = items.length
-        $('backlogStrip').innerHTML = items.map(beadCard).join('')
+        // Children are named outright here, so only roots seed the trees —
+        // renderTree keeps the first appearance either way.
+        const inBacklog = new Set(items.map((i) => i.id))
+        $('backlogStrip').innerHTML = renderTree(items.filter((i) => !inBacklog.has(i.parent)))
       }
 
       /* ---- work tree ---------------------------------------------------------- */
@@ -2333,6 +2417,20 @@
           // next poll, which is up to a second away and would feel like a dead press.
           return redrawBoard()
         }
+        // The caret sits inside its card's button, so it claims its press before
+        // the card-level handler below ever sees it — expanding must not also
+        // open the sheet. Redrawn from the state the page already has, and
+        // focus handed back to the rebuilt row, since repainting from innerHTML
+        // drops whatever had it.
+        const expander = e.target.closest('[data-expand]')
+        if (expander) {
+          const id = expander.dataset.expand
+          if (expandedEpics.has(id)) expandedEpics.delete(id)
+          else expandedEpics.add(id)
+          redrawBoard()
+          requestAnimationFrame(() => refocusCard(id))
+          return
+        }
         // A sub-bead in the sheet swaps the sheet's subject rather than stacking
         // another one on top — there's only ever one thing being looked at.
         const bead = e.target.closest('[data-bead]')
@@ -2369,6 +2467,27 @@
         if (!row || row !== e.target) return
         e.preventDefault()
         openSheet('diff', row.dataset.diff)
+      })
+
+      /* A repaint rebuilds the board from innerHTML, which drops the focused
+      node — so a toggle hands focus back to the row it just rebuilt. */
+      function refocusCard(id) {
+        document.querySelector(`.card[data-bead="${CSS.escape(id)}"]`)?.focus({preventScroll: true})
+      }
+
+      /* A focused parent expands with → and folds with ←. The caret is a span
+      rather than a second tab stop, so the card toggles its own subtree
+      without the focus ever leaving the row. */
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+        const card = e.target.closest?.('.card[data-has-kids]')
+        if (!card || card !== e.target) return
+        e.preventDefault()
+        const id = card.dataset.bead
+        if (e.key === 'ArrowRight') expandedEpics.add(id)
+        else expandedEpics.delete(id)
+        redrawBoard()
+        requestAnimationFrame(() => refocusCard(id))
       })
 
       /* `toggle` doesn't bubble, so it's caught on the way down. Folding is the
