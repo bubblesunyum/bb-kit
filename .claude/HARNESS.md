@@ -49,7 +49,9 @@ how the pieces fit together.
   change to a component or to the token CSS captured nothing at all, which is
   the same "went to review unseen" the script exists to end.
   Playwright rather than the browser pane, because the pane cannot be
-  captured while it is hidden and returns solid black with no error.
+  captured while it is hidden and returns solid black with no error. Before
+  each shot it waits for the forced pseudo-states to settle, or a state row
+  photographs at rest — the same race `scripts/a11y.mjs` waits out.
 - **Librarian:** `.claude/agents/librarian` (sonnet) audits the knowledge layer
   from a digest, on a cadence, never on the hot path. It proposes; the calling
   session decides.

@@ -20,6 +20,8 @@ import { createReadStream, existsSync, readFileSync } from "node:fs"
 import { createServer } from "node:http"
 import { extname, join, normalize } from "node:path"
 
+import { settleForPseudoStates } from "./settle-pseudo.mjs"
+
 async function sweep(filter) {
   if (!existsSync(join(BUILD, "index.json"))) {
     console.error("no storybook-static/index.json — run `npm run build-storybook` first")
@@ -64,6 +66,12 @@ async function sweep(filter) {
 async function checkStory(page, base, story, axeSource, failures, checked) {
   await page.goto(`${base}?id=${story.id}&globals=layout:four-up`, { timeout: TIMEOUT })
   await page.waitForSelector(CELL, { timeout: TIMEOUT })
+  try {
+    await settleForPseudoStates(page)
+  } catch {
+    failures.push(`${story.id}  all four  forced states never settled`)
+    return { checked }
+  }
   await page.evaluate(axeSource)
 
   const cells = await page.$$(CELL)

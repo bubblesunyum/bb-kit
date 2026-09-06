@@ -101,6 +101,9 @@ const VARIANTS = {
   default: PRIMARY,
   ghost: "text-text hover:bg-muted",
   link: "text-primary underline-offset-4 hover:underline",
+  /* The press holds at /90 instead of deepening to /80: in clash light the
+     fill mixes toward a dark page behind dark text, and /80 sinks to 3.98
+     against the 4.5 floor. The press still reads — the button scales. */
   danger:
-    "bg-danger-surface text-text-on-danger hover:bg-danger-surface/90 active:bg-danger-surface/80 disabled:bg-disabled-surface",
+    "bg-danger-surface text-text-on-danger hover:bg-danger-surface/90 active:bg-danger-surface/90 disabled:bg-disabled-surface",
 } as const

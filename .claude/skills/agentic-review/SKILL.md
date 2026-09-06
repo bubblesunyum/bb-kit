@@ -45,7 +45,8 @@ a component or the token CSS captures without your naming it. A word filters ids
 one story in the four-up layout, so a single image carries all four
 palette-and-mode combinations. It reads `storybook-static`, so run
 `scripts/verify.sh --full` (or `npm run build-storybook`) first, or the shots
-are of the last build rather than of this change.
+are of the last build rather than of this change. Before each shot it waits
+for the forced pseudo-states to settle, or a state row photographs at rest.
 
 For an uncommitted tree the window starts at the working tree's first edit, not
 at HEAD — HEAD can be days old, and a packet dated against it swept in whole

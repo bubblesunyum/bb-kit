@@ -22,6 +22,8 @@ import { createReadStream, existsSync, readFileSync } from "node:fs"
 import { createServer } from "node:http"
 import { basename, dirname, extname, join, normalize } from "node:path"
 
+import { settleForPseudoStates } from "./settle-pseudo.mjs"
+
 async function shoot(argument) {
   if (!existsSync(join(BUILD, "index.json"))) {
     console.error("no storybook-static/index.json — run `npm run build-storybook` first")
@@ -69,6 +71,14 @@ async function capture(page, base, story) {
   await page.goto(`${base}?id=${story.id}&globals=layout:four-up`, { timeout: TIMEOUT })
   const root = page.locator(ROOT_SELECTOR)
   await root.waitFor({ timeout: TIMEOUT })
+  /* The forced pseudo-states land after the root this waits for — the addon
+     applies its classes in a setTimeout inside an effect — so a shot taken
+     first shows every state row at rest. Shared with `a11y.mjs`. */
+  try {
+    await settleForPseudoStates(page)
+  } catch {
+    throw new Error("forced states never settled")
+  }
   /* The four-up cells animate nothing, but fonts and the pulse on Skeleton do
      land a frame late, and a shot taken before them reads as a broken story. */
   await page.waitForTimeout(SETTLE)

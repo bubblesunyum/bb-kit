@@ -6,22 +6,22 @@
     ".claude/agents/reviewer-taste.md": "5e41cea7ca8ffc0b",
     ".claude/skills/workflow/SKILL.md": "05efbff8eabd0ba8",
     "CLAUDE.md": "cf7d88394940b729",
-    "doc": "2b9621ef417f7aec",
+    "doc": "0688f369d8b51688",
     "harness/seat.md": "5b14b3f10dbe9ed8",
     "opencode.json": "c40958733033bf93",
     "scripts/brief.sh": "bcbedff2c42c44ad",
     "scripts/context.py": "610d92ea284ed318",
     "scripts/opencode-agents.py": "5e28af95787ef261",
     "scripts/review.sh": "9f5a8bf175814430",
-    "scripts/shoot.mjs": "3117d179d8c6d4ca",
+    "scripts/shoot.mjs": "a43dee3d14f605f2",
     "scripts/verify.sh": "53f8e3699226eadd"
   },
   ".claude/skills/agentic-review/SKILL.md": {
     ".claude/agents/reviewer-correctness.md": "970cbf5af5aadf03",
     ".claude/agents/reviewer-taste.md": "5e41cea7ca8ffc0b",
-    "doc": "3b0a6048b7913714",
+    "doc": "238429d2b3595eeb",
     "scripts/review.sh": "9f5a8bf175814430",
-    "scripts/shoot.mjs": "3117d179d8c6d4ca"
+    "scripts/shoot.mjs": "a43dee3d14f605f2"
   },
   ".claude/skills/handoff/SKILL.md": {
     "doc": "b0b18c0cc2084e19",
