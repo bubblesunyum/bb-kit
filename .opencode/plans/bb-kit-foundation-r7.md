@@ -146,7 +146,9 @@ Built on it:
 
 `InfiniteList` is **deferred** — see §3.7.
 
-A list row is only valid inside a list. That is why `Card` and `CardListItem` are separate rather than one thing. They share their variants and their parts; only the wrapper differs.
+A list row is only valid inside a list. That is why `Card` and `CardListItem` are separate rather than one thing. They share their variants and their parts; only the wrapper and the weight of the raised shadow differ.
+
+`ListItem`'s raised form is one shadow step above `Surface`'s (bbk-2vw, decided at step 4.5 by looking at it). Rows stack, so a raised row is judged against the plain row above it rather than against the page, and at `Surface`'s weight the two were indistinguishable. A standalone `Card` keeps the lighter one — the whitespace around it already does that job. This is the only place a component overrides a `Surface` variant's paint; a second one is a sign the variant itself is wrong.
 
 Three specifics an agent would otherwise guess at:
 
@@ -187,7 +189,7 @@ Without this table an agent invents public API. These strings cannot be changed 
 | `Surface` | `plain` · `outline` · `raised` | `plain` | `OutlineSurface` · `RaisedSurface` |
 | `Badge` | — (see below) | — | — |
 | `Card` | inherits `Surface`'s | `raised` | — |
-| `ListItem` | inherits `Surface`'s | `plain` | `CardListItem` (= `variant="raised"`) |
+| `ListItem` | inherits `Surface`'s, raised one shadow step heavier | `plain` | `CardListItem` (= `variant="raised"`) |
 
 `outline`, not `outlined` — that is the word shadcn uses, so it is the word an agent types from habit, which is the whole point of Rule 4. For the same reason, `variant="default"` is accepted as a silent alias for `primary` rather than warned about.
 

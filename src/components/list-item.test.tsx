@@ -44,7 +44,7 @@ describe("CardListItem", () => {
   test("it is a row that looks like a card", () => {
     inList(<CardListItem>a row</CardListItem>)
 
-    expect(screen.getByRole("listitem")).toHaveClass("shadow-xs")
+    expect(screen.getByRole("listitem")).toHaveClass("shadow-sm")
   })
 
   // A named wrapper, not a second component: two ways to say one thing is what

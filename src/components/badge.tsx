@@ -35,7 +35,7 @@ export function Badge({
          and wrap-anywhere is the only thing that shrinks a flex item's
          automatic minimum width below one unbreakable word. */
       className={cn(
-        "inline-flex items-center justify-center gap-1 text-center wrap-anywhere",
+        "inline-flex items-center justify-center gap-1.5 text-center wrap-anywhere",
         /* Caps and a little tracking read as a label rather than a
            sentence, which is what lets the pill shrink this far without
            the text turning into a hard-to-scan smudge. */
@@ -49,7 +49,7 @@ export function Badge({
         "disabled:pointer-events-none disabled:text-disabled-text",
         "transition-[background-color,color,border-color,transform] duration-120 ease-standard",
         "active:scale-[0.97] motion-reduce:active:scale-100",
-        "[&_svg]:size-[1.15em] [&_svg]:shrink-0",
+        "[&_svg]:size-[0.95em] [&_svg]:shrink-0",
         classFor(SIZES, size, "Badge's size"),
         selected ? SELECTED : UNSELECTED,
         className,

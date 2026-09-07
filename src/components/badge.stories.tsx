@@ -176,7 +176,7 @@ function TagFilter() {
 
   return (
     <VStack align="start" gap={3}>
-      <HStack align="center" gap={2} className="flex-wrap">
+      <HStack align="center" gap={1} className="flex-wrap">
         {TAGS.map((tag) => (
           <Badge
             key={tag}

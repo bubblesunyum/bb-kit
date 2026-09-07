@@ -11,8 +11,11 @@ import { Surface } from "./surface"
  * around it — `position: relative` for the overlay, and the highlight tint
  * while the pointer is anywhere over a card that is entirely a link.
  *
- * A card is a card wherever it is. A row inside a list is a `ListItem` — same
- * parts, different wrapper — because a list row is only valid inside a list.
+ * A card is a card wherever it is. A row inside a list is a `ListItem`, which
+ * has the same parts in a different wrapper, because a list row is only valid
+ * inside a list. Its raised form carries a heavier shadow than this one — a row
+ * is judged against the row above it, while a card has whitespace doing that
+ * work.
  */
 export function Card({ variant = "raised", className, ...props }: CardProps) {
   return (
