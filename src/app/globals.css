@@ -28,6 +28,30 @@
   --shadow-color-md: light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.6));
 }
 
+/* Hover and press shade the fill instead of fading it out. Opacity mixes a
+   control with whatever sits behind it, so the same `/90` gained contrast on a
+   light page and lost it on a dark one — a pressed danger button measured 3.98
+   against the 4.5 floor in clash light. Shading is background-independent, and
+   `--color-text` is the far end of the page's own contrast range in every
+   palette and mode, so mixing toward it always moves a fill away from its own
+   label. Measured across both palettes in both modes, every state now sits
+   above the floor and hover and press read as more contrast, not less.
+
+   Set --pressable-fill to the same role the background paints, and name the
+   tokens as `--text` / `--primary`, never the `--color-*` aliases. Under
+   `@theme inline` the aliases are not emitted per theme: they land once on
+   :root, where light-dark() has already resolved against :root's own
+   color-scheme, so hand-written CSS reading them gets light-mode colour in
+   every mode. Tailwind's own utilities inline the raw token and are fine. */
+@utility pressable {
+  &:hover {
+    background-color: color-mix(in srgb, var(--pressable-fill) 80%, var(--text));
+  }
+  &:active {
+    background-color: color-mix(in srgb, var(--pressable-fill) 60%, var(--text));
+  }
+}
+
 /* `inline` is load-bearing. Without it Tailwind resolves these at build time and
    hardcodes whatever the value was, so theme switching does nothing — silently. */
 @theme inline {

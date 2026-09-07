@@ -89,11 +89,11 @@ const SIZES = {
   lg: "min-h-12 px-6 py-2.5 text-lg",
 } as const
 
-// Roles, never colours — Rule 7. The /90 and /80 steps are the fill mixed with
-// what is behind it, which is why hover works on both palettes without a
-// second set of tokens to keep in step.
+// Roles, never colours — Rule 7. Hover and press come from `pressable`, which
+// shades the fill toward the page's text colour rather than fading it out; see
+// the comment on the utility in globals.css for why opacity was wrong.
 const PRIMARY =
-  "bg-primary text-text-on-primary hover:bg-primary/90 active:bg-primary/80 disabled:bg-disabled-surface"
+  "bg-primary text-text-on-primary pressable [--pressable-fill:var(--primary)] disabled:bg-disabled-surface"
 
 const VARIANTS = {
   primary: PRIMARY,
@@ -101,9 +101,6 @@ const VARIANTS = {
   default: PRIMARY,
   ghost: "text-text hover:bg-muted",
   link: "text-primary underline-offset-4 hover:underline",
-  /* The press holds at /90 instead of deepening to /80: in clash light the
-     fill mixes toward a dark page behind dark text, and /80 sinks to 3.98
-     against the 4.5 floor. The press still reads — the button scales. */
   danger:
-    "bg-danger-surface text-text-on-danger hover:bg-danger-surface/90 active:bg-danger-surface/90 disabled:bg-disabled-surface",
+    "bg-danger-surface text-text-on-danger pressable [--pressable-fill:var(--danger-surface)] disabled:bg-disabled-surface",
 } as const

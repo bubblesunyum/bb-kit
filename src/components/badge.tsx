@@ -88,4 +88,4 @@ const UNSELECTED =
   "border-input-border border font-normal text-text hover:bg-muted disabled:border-disabled-surface"
 
 const SELECTED =
-  "border border-transparent bg-primary font-medium text-text-on-primary hover:bg-primary/90 active:bg-primary/80 disabled:bg-disabled-surface"
+  "border border-transparent bg-primary font-medium text-text-on-primary pressable [--pressable-fill:var(--primary)] disabled:bg-disabled-surface"
