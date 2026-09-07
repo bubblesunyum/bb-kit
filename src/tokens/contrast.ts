@@ -12,9 +12,12 @@ export function checkPalette(name: PaletteName, mode: Mode): Check[] {
   const palette = palettes[name]
   const value = (role: Role) => palette[role][mode]
 
+  const fill = (target: Fill) =>
+    typeof target === "string" ? value(target) : shade(value(target.role), value("text"), target.state)
+
   return CHECKS.map(([foreground, background, minimum]) => {
-    const ratio = contrastRatio(value(foreground), value(background))
-    return { foreground, background, minimum, ratio, passes: ratio >= minimum }
+    const ratio = contrastRatio(value(foreground), fill(background))
+    return { foreground, background: label(background), minimum, ratio, passes: ratio >= minimum }
   })
 }
 
@@ -32,18 +35,37 @@ export function checkEveryPalette(): Check[] {
   )
 }
 
+/**
+ * `color-mix(in srgb, fill P%, text)`, in JS. srgb mixes the gamma-encoded
+ * bytes, so this is a plain per-channel average of the parsed values — no
+ * linearisation, unlike luminance() below. It has to stay in step with the
+ * `pressable` utility in globals.css: if the percentages there move, MIX moves.
+ */
+function shade(fill: string, text: string, state: PressableState): string {
+  const weight = MIX[state]
+  const toward = bytes(text)
+  return `#${bytes(fill)
+    .map((c, i) => Math.round(c * weight + toward[i] * (1 - weight)))
+    .map((c) => c.toString(16).padStart(2, "0"))
+    .join("")}`
+}
+
 function luminance(hex: string): number {
-  const [r, g, b] = [0, 2, 4].map((i) => channel(parseInt(hex.replace("#", "").slice(i, i + 2), 16) / 255))
+  const [r, g, b] = bytes(hex).map((c) => channel(c / 255))
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
+const bytes = (hex: string) => [0, 2, 4].map((i) => parseInt(hex.replace("#", "").slice(i, i + 2), 16))
+
 const channel = (c: number) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4))
+
+const label = (target: Fill) => (typeof target === "string" ? target : `${target.role} (${target.state})`)
 
 export type { Mode }
 
 export type Check = {
   foreground: Role
-  background: Role
+  background: string
   minimum: number
   ratio: number
   passes: boolean
@@ -53,6 +75,17 @@ export type Check = {
 
 export const MODES: readonly Mode[] = ["light", "dark"]
 
+/** A background a check measures against: a flat role, or a role as `pressable` paints it. */
+type Fill = Role | { role: Role; state: PressableState }
+
+type PressableState = "hover" | "press"
+
+/** The percentages in globals.css's `pressable` utility. */
+const MIX = { hover: 0.8, press: 0.6 } as const
+
+const hover = (role: Role): Fill => ({ role, state: "hover" })
+const press = (role: Role): Fill => ({ role, state: "press" })
+
 /**
  * §4.6's table, in its order. Rows name §5.1's roles exactly.
  *
@@ -60,11 +93,15 @@ export const MODES: readonly Mode[] = ["light", "dark"]
  * primary fill, because the ring is an outline drawn *outside* the control, on
  * the surface behind it. An inset ring would need this row to change.
  *
+ * A pressable role is checked in all three of its states, because the hover and
+ * press fills are the ones a hand-measurement is most likely to have got wrong
+ * and the axe sweep only catches them after a full Storybook build.
+ *
  * Thresholds never move. A failure means a colour is wrong, not that the floor
  * is too high — r5 shipped a border at 1.226 against a 1.25 floor while
  * claiming all-pass.
  */
-const CHECKS: readonly [Role, Role, number][] = [
+const CHECKS: readonly [Role, Fill, number][] = [
   ["text", "page", 4.5],
   ["text", "card", 4.5],
   ["text", "muted", 4.5],
@@ -73,8 +110,12 @@ const CHECKS: readonly [Role, Role, number][] = [
   ["quiet", "muted", 4.5],
   ["quiet", "highlight", 4.5],
   ["text-on-primary", "primary", 4.5],
+  ["text-on-primary", hover("primary"), 4.5],
+  ["text-on-primary", press("primary"), 4.5],
   ["text-on-highlight", "highlight", 4.5],
   ["text-on-danger", "danger-surface", 4.5],
+  ["text-on-danger", hover("danger-surface"), 4.5],
+  ["text-on-danger", press("danger-surface"), 4.5],
   ["danger", "page", 4.5],
   ["danger", "card", 4.5],
   ["primary", "page", 3.0],
