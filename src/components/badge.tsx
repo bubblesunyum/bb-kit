@@ -35,7 +35,11 @@ export function Badge({
          and wrap-anywhere is the only thing that shrinks a flex item's
          automatic minimum width below one unbreakable word. */
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 text-center wrap-anywhere",
+        "inline-flex items-center justify-center gap-1 text-center wrap-anywhere",
+        /* Caps and a little tracking read as a label rather than a
+           sentence, which is what lets the pill shrink this far without
+           the text turning into a hard-to-scan smudge. */
+        "uppercase tracking-[0.5px]",
         /* No `outline-none` — in Tailwind v4 it sets --tw-outline-style to none
            and the focus-visible utilities below inherit it, so the ring never
            draws. */
@@ -45,7 +49,7 @@ export function Badge({
         "disabled:pointer-events-none disabled:text-disabled-text",
         "transition-[background-color,color,border-color,transform] duration-120 ease-standard",
         "active:scale-[0.97] motion-reduce:active:scale-100",
-        "[&_svg]:size-3.5 [&_svg]:shrink-0",
+        "[&_svg]:size-[1.15em] [&_svg]:shrink-0",
         classFor(SIZES, size, "Badge's size"),
         selected ? SELECTED : UNSELECTED,
         className,
@@ -63,18 +67,19 @@ type BadgeProps = Omit<ComponentProps<"button">, "type"> & {
 
 type Size = keyof typeof SIZES
 
-// 32 / 40 / 48px, matching Button so a badge sitting next to one lines up.
-// Roomier horizontal padding than Button's, because a pill's round ends eat
-// into the space the label reads as its own.
+// 28 / 32 / 40px — one step under Button, because a badge is a tag first and
+// a control second, and a row of them on a card should sit quieter than the
+// buttons around it. A default badge lines up with a small Button rather than
+// a default one, which is the pairing a filter bar actually wants.
 //
 // The radius is half the *minimum* height rather than rounded-full, which is
 // half the actual one. On a single line the two are identical and it is a
 // pill; on a tag long enough to wrap, rounded-full grows ellipse ends that the
 // middle lines of the label then run into.
 const SIZES = {
-  sm: "min-h-8 rounded-[1rem] px-3.5 py-1 text-sm",
-  md: "min-h-10 rounded-[1.25rem] px-4.5 py-2 text-base",
-  lg: "min-h-12 rounded-[1.5rem] px-6 py-2.5 text-lg",
+  sm: "min-h-7 rounded-[0.875rem] px-2.5 py-0.5 text-xs",
+  md: "min-h-8 rounded-[1rem] px-3 py-1 text-sm",
+  lg: "min-h-10 rounded-[1.25rem] px-4 py-1.5 text-base",
 } as const
 
 // The border role is the input one, not the plain border: an unselected badge

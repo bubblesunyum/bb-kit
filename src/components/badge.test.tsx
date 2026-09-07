@@ -17,7 +17,7 @@ describe("what a Badge is", () => {
   test("it is unselected at medium without being asked", () => {
     render(<Badge>Design</Badge>)
 
-    expect(screen.getByRole("button")).toHaveClass("min-h-10", "border-input-border")
+    expect(screen.getByRole("button")).toHaveClass("min-h-8", "border-input-border")
   })
 
   test("it carries a data-slot and passes the rest through", () => {
@@ -145,7 +145,7 @@ describe("toggling it", () => {
 })
 
 describe("the three sizes", () => {
-  test("they are 32, 40 and 48px tall, and the height is a minimum", () => {
+  test("they are 28, 32 and 40px tall, and the height is a minimum", () => {
     render(
       <>
         <Badge size="sm">sm</Badge>
@@ -154,17 +154,17 @@ describe("the three sizes", () => {
       </>,
     )
 
-    expect(screen.getByRole("button", { name: "sm" })).toHaveClass("min-h-8")
-    expect(screen.getByRole("button", { name: "md" })).toHaveClass("min-h-10")
-    expect(screen.getByRole("button", { name: "lg" })).toHaveClass("min-h-12")
+    expect(screen.getByRole("button", { name: "sm" })).toHaveClass("min-h-7")
+    expect(screen.getByRole("button", { name: "md" })).toHaveClass("min-h-8")
+    expect(screen.getByRole("button", { name: "lg" })).toHaveClass("min-h-10")
   })
 
   test("a long tag grows the badge instead of spilling out of it", () => {
     render(<Badge>{AWKWARD.longTitle}</Badge>)
 
     const badge = screen.getByRole("button")
-    expect(badge).toHaveClass("min-h-10", "wrap-anywhere")
-    expect(badge).not.toHaveClass("h-10")
+    expect(badge).toHaveClass("min-h-8", "wrap-anywhere")
+    expect(badge).not.toHaveClass("h-8")
   })
 
   // rounded-full is half the *actual* height, so a wrapped tag grows ellipse
@@ -173,7 +173,7 @@ describe("the three sizes", () => {
     render(<Badge>Design</Badge>)
 
     const badge = screen.getByRole("button")
-    expect(badge).toHaveClass("rounded-[1.25rem]")
+    expect(badge).toHaveClass("rounded-[1rem]")
     expect(badge).not.toHaveClass("rounded-full")
   })
 })
@@ -193,8 +193,8 @@ describe("focus and overriding", () => {
 
     const badge = screen.getByRole("button")
     expect(badge).toHaveClass("min-h-0", "rounded-none")
-    expect(badge).not.toHaveClass("min-h-10")
-    expect(badge).not.toHaveClass("rounded-[1.25rem]")
+    expect(badge).not.toHaveClass("min-h-8")
+    expect(badge).not.toHaveClass("rounded-[1rem]")
   })
 })
 

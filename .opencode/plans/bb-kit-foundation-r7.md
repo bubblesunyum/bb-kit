@@ -197,6 +197,8 @@ There is no `PlainSurface`: it would be a wrapper around the default, so `<Surfa
 
 **Sizes.** `Button`, `Badge` and `SearchField` take `size`: `sm` · `md` · `lg`, default `md`. Heights 32 / 40 / 48px, all clearing the 24px minimum in §5.6.
 
+`Badge` is the exception, at 28 / 32 / 40px — one step under the rest (bbk-box, decided at step 4.5 by looking at it). A badge is a tag first and a control second, and a row of them on a card should sit quieter than the buttons around it; a default badge lines up with a small `Button`, which is the pairing a filter bar wants. Its labels are uppercase with 0.5px tracking, which is what lets the pill shrink this far and still scan. 28px still clears §5.6's 24px minimum.
+
 **Text**
 
 | Prop | Values | Default |

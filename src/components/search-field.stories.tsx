@@ -44,7 +44,10 @@ export const EmptyAndFilled: Story = {
   ),
 }
 
-/** 32, 40 and 48px — the same heights as Button and Badge, so a filter bar lines up. */
+/**
+ * 32, 40 and 48px — the same heights as Button. Badge sits one step under
+ * both, so a filter bar's tags read quieter than its field and its buttons.
+ */
 export const Sizes: Story = {
   render: () => (
     <VStack gap={4}>

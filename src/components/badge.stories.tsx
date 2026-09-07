@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Check, Tag } from "lucide-react"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import { AWKWARD } from "@/test/awkward-content"
@@ -47,7 +48,11 @@ export const AsATagFilter: Story = {
   render: () => <TagFilter />,
 }
 
-/** 32, 40 and 48px — the same heights as Button, so a mixed row lines up. */
+/**
+ * 28, 32 and 40px — one step under Button, so a default badge sits next to a
+ * small button rather than a default one. Caps and 0.5px tracking are what
+ * keep the label scannable at that size.
+ */
 export const Sizes: Story = {
   render: () => (
     <VStack gap={4}>
@@ -58,6 +63,29 @@ export const Sizes: Story = {
           </Text>
           <Badge size={size}>Design</Badge>
           <Badge size={size} selected>
+            Design
+          </Badge>
+        </HStack>
+      ))}
+    </VStack>
+  ),
+}
+
+/**
+ * An icon inside a badge is sized in `em`, so it tracks the label through all
+ * three sizes instead of towering over the smallest pill.
+ */
+export const WithAnIcon: Story = {
+  render: () => (
+    <VStack gap={4}>
+      {(["sm", "md", "lg"] as const).map((size) => (
+        <HStack key={size} align="center" gap={3}>
+          <Badge size={size}>
+            <Tag aria-hidden />
+            Design
+          </Badge>
+          <Badge size={size} selected>
+            <Check aria-hidden />
             Design
           </Badge>
         </HStack>
