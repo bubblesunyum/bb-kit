@@ -145,6 +145,9 @@ export const ClickableRows: Story = {
       )}
     />
   ),
+  parameters: {
+    pseudo: { focusVisible: ["li:first-child a"], hover: ["li:nth-child(2)"] },
+  },
 }
 
 /** The gap is Tailwind's scale, not a second one. */

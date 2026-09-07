@@ -52,7 +52,7 @@ export const Card: Story = {
 /** The row, in the `List` it is built for. */
 export const Row: Story = {
   render: () => (
-    <div className="w-160">
+    <div className="w-144">
       <List items={POSTS} getKey={(post) => post.href} renderItem={(post) => <PostRow post={post} />} />
     </div>
   ),
@@ -61,7 +61,7 @@ export const Row: Story = {
 /** Both shapes side by side — the same five fields, arranged twice. */
 export const BothShapes: Story = {
   render: () => (
-    <VStack gap={8} className="w-160">
+    <VStack gap={8} className="w-144">
       <div className="w-96">
         <PostCard post={POST} />
       </div>
@@ -76,7 +76,7 @@ export const BothShapes: Story = {
  */
 export const Sparse: Story = {
   render: () => (
-    <VStack gap={8} className="w-160">
+    <VStack gap={8} className="w-144">
       <div className="w-96">
         <PostCard post={SPARSE} />
       </div>
@@ -92,7 +92,7 @@ export const Sparse: Story = {
  */
 export const AGridOfCards: Story = {
   render: () => (
-    <div className="grid w-240 grid-cols-3 gap-4">
+    <div className="grid w-144 grid-cols-2 gap-4">
       {POSTS.map((post) => (
         <PostCard key={post.href} post={post} />
       ))}
@@ -126,7 +126,7 @@ export const AwkwardContent: Story = {
  */
 export const Focused: Story = {
   render: () => (
-    <VStack gap={8} className="w-160">
+    <VStack gap={8} className="w-144">
       <div className="w-96">
         <PostCard post={POST} />
       </div>
