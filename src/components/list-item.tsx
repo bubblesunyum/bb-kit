@@ -12,8 +12,9 @@ import { Surface } from "./surface"
  * reads as a stack of unrelated things.
  *
  * It renders an `<li>`, so it is only valid inside a list. A box that stands on
- * its own is a `Card` — the same parts in a different wrapper. The raised forms
- * differ only in shadow weight, for the reason given on the variant below.
+ * its own is a `Card` — the same parts in a different wrapper. The raised form
+ * carries a heavier shadow and a hairline border, for the reason given on the
+ * variant below.
  */
 export function ListItem({ variant = "plain", asChild = false, className, ...props }: ListItemProps) {
   /* asChild replaces the row element rather than the list: whatever you pass
@@ -29,12 +30,14 @@ export function ListItem({ variant = "plain", asChild = false, className, ...pro
       /* LINK_HOST for the same reason Card wears it: a row is exactly as likely
          to be entirely a link as a card is, so it needs both the overlay's
          positioned ancestor and the hover tint that goes with one. */
-      /* A step above Surface's raised shadow. Rows stack, so a raised row is
-         judged against the plain row above it rather than against the page,
-         and at shadow-xs the two were indistinguishable in every palette. A
-         standalone Card keeps the lighter shadow — the whitespace around it
-         already does this job. */
-      className={cn(LINK_HOST, "flex flex-col gap-2", variant === "raised" && "shadow-sm", className)}
+      /* A step above Surface's raised shadow, plus its outline's hairline.
+         Rows stack, so a raised row is judged against the plain row above it
+         rather than against the page, and at shadow-xs the two were
+         indistinguishable in every palette. Shadow alone still does not survive
+         a dark page — the shadow colour keys to the mode, not to how light the
+         page is — so the border is the signal that does. A standalone Card
+         keeps shadow only: the whitespace around it already does this job. */
+      className={cn(LINK_HOST, "flex flex-col gap-2", variant === "raised" && "border-border border shadow-sm", className)}
     >
       <Row {...props} data-slot="list-item" />
     </Surface>

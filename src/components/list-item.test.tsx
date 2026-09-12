@@ -44,7 +44,10 @@ describe("CardListItem", () => {
   test("it is a row that looks like a card", () => {
     inList(<CardListItem>a row</CardListItem>)
 
+    // The border is the signal that survives a dark page, where the shadow
+    // does not — the shadow colour keys to the mode, not to the page.
     expect(screen.getByRole("listitem")).toHaveClass("shadow-sm")
+    expect(screen.getByRole("listitem")).toHaveClass("border", "border-border")
   })
 
   // A named wrapper, not a second component: two ways to say one thing is what
