@@ -36,7 +36,9 @@
    palette and mode, so mixing toward it always moves a fill away from its own
    label. contrast.ts checks both mixes in both palettes and both modes, so
    every state stays above the floor and hover and press read as more contrast,
-   not less. Its MIX percentages have to move with the ones below.
+   not less. Its MIX percentages have to move with the ones below, and a test
+   in contrast.test.ts reads them out of this file — moving one side without
+   the other fails the suite.
 
    Set --pressable-fill to the same role the background paints. The var()
    falls back to --card so a caller who copies the class and forgets it still
