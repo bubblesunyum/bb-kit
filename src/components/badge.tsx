@@ -1,4 +1,4 @@
-import type { ComponentProps, MouseEvent } from "react"
+import { Children, type ComponentProps, type MouseEvent, type ReactNode } from "react"
 
 import { classFor } from "@/lib/classes"
 import { cn } from "@/lib/utils"
@@ -20,6 +20,7 @@ export function Badge({
   onSelectedChange,
   onClick,
   className,
+  children,
   ...props
 }: BadgeProps) {
   return (
@@ -31,11 +32,14 @@ export function Badge({
         onClick?.(event)
         if (!event.defaultPrevented) onSelectedChange?.(!selected)
       }}
-      /* Same reasoning as Button: min-h keeps a long tag inside its own pill,
-         and wrap-anywhere is the only thing that shrinks a flex item's
-         automatic minimum width below one unbreakable word. */
+      /* min-w-0 and max-w-full, not wrap-anywhere: a pill keeps a short label
+         whole and wraps as a whole to the next line, and only a label wider
+         than its row truncates — with an ellipsis from the label span, never
+         a mid-word chop. wrap-anywhere would shrink the pill below one word
+         and break it. Whole pills still wrap first, because flex breaks lines
+         before it shrinks within one. */
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 text-center wrap-anywhere",
+        "inline-flex min-w-0 max-w-full items-center justify-center gap-1.5 text-center",
         /* Caps and a little tracking read as a label rather than a
            sentence, which is what lets the pill shrink this far without
            the text turning into a hard-to-scan smudge. */
@@ -55,8 +59,40 @@ export function Badge({
         className,
       )}
       {...props}
-    />
+    >
+      {label(children)}
+    </button>
   )
+}
+
+/* A tag is one line: a squeezed pill truncates its label with an ellipsis
+   rather than breaking mid-word. The label needs its own element for that —
+   text-overflow never reaches an anonymous flex item, so `truncate` on the
+   button alone clips with no ellipsis. Adjacent strings merge into one span,
+   so a composed label truncates as a whole instead of a piece at a time; an
+   icon stays a direct child so the gap still places it. */
+function label(children: ReactNode): ReactNode {
+  const parts: ReactNode[] = []
+  let text = ""
+  const flush = () => {
+    if (text) {
+      parts.push(
+        <span key={parts.length} data-slot="badge-label" className="min-w-0 truncate">
+          {text}
+        </span>,
+      )
+      text = ""
+    }
+  }
+  Children.forEach(children, (child) => {
+    if (typeof child === "string" || typeof child === "number") text += child
+    else {
+      flush()
+      parts.push(child)
+    }
+  })
+  flush()
+  return parts
 }
 
 type BadgeProps = Omit<ComponentProps<"button">, "type"> & {

@@ -145,8 +145,8 @@ export const FocusOnEitherBackground: Story = {
 
 /**
  * Tags come from whatever wrote the post, so a badge gets given words nobody
- * sized it for. The height is a minimum and the label breaks anywhere, so a
- * long one grows the pill rather than escaping it.
+ * sized it for. The pill is one line: a long label truncates with an ellipsis
+ * rather than breaking mid-word or escaping the pill.
  */
 export const AwkwardContent: Story = {
   render: () => (

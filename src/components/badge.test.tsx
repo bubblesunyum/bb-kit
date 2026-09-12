@@ -159,16 +159,50 @@ describe("the three sizes", () => {
     expect(screen.getByRole("button", { name: "lg" })).toHaveClass("min-h-10")
   })
 
-  test("a long tag grows the badge instead of spilling out of it", () => {
+  test("a long tag truncates to one line instead of breaking mid-word", () => {
     render(<Badge>{AWKWARD.longTitle}</Badge>)
 
     const badge = screen.getByRole("button")
-    expect(badge).toHaveClass("min-h-8", "wrap-anywhere")
+    expect(badge).toHaveClass("min-w-0", "max-w-full")
     expect(badge).not.toHaveClass("h-8")
+    expect(badge).not.toHaveClass("wrap-anywhere")
+
+    // text-overflow never reaches an anonymous flex item, so the label carries
+    // its own truncating element — `truncate` on the button alone would clip
+    // with no ellipsis.
+    const label = badge.querySelector('[data-slot="badge-label"]')
+    expect(label).toHaveClass("min-w-0", "truncate")
+    expect(label).toHaveTextContent(AWKWARD.longTitle)
   })
 
-  // rounded-full is half the *actual* height, so a wrapped tag grows ellipse
-  // ends that its own middle lines run into.
+  test("a composed label merges into one span, with no gap inside the words", () => {
+    render(
+      <Badge>
+        {12}
+        {" items"}
+      </Badge>,
+    )
+
+    const labels = screen.getByRole("button").querySelectorAll('[data-slot="badge-label"]')
+    expect(labels).toHaveLength(1)
+    expect(labels[0]).toHaveTextContent("12 items")
+  })
+
+  test("an icon stays a direct child, so the gap still places it", () => {
+    render(
+      <Badge>
+        <span data-testid="icon" />
+        Design
+      </Badge>,
+    )
+
+    const badge = screen.getByRole("button")
+    expect(badge.querySelector('[data-testid="icon"]')?.parentElement).toBe(badge)
+    expect(badge.querySelector('[data-slot="badge-label"]')).toHaveTextContent("Design")
+  })
+
+  // rounded-full is half the *actual* height, so on the one line a badge always
+  // keeps, a fixed half-minimum radius is what makes it a pill.
   test("the radius is half the minimum height, not half the real one", () => {
     render(<Badge>Design</Badge>)
 

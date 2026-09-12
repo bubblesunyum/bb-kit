@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import { AWKWARD } from "@/test/awkward-content"
-import { GhostButton } from "./button"
+import { Badge } from "./badge"
 import { Card, CardBody, CardFooter, CardMedia, CardTitle } from "./card"
 import { CardLink } from "./card-link"
 import { HStack, VStack } from "./stack"
@@ -54,8 +54,8 @@ export const APostCard: Story = {
         </Text>
       </CardBody>
       <CardFooter>
-        <GhostButton size="sm">typescript</GhostButton>
-        <GhostButton size="sm">react</GhostButton>
+        <Badge size="sm">typescript</Badge>
+        <Badge size="sm">react</Badge>
       </CardFooter>
     </Card>
   ),
@@ -138,7 +138,7 @@ export const ARowOfThem: Story = {
               </Text>
             </CardBody>
             <CardFooter>
-              <GhostButton size="sm">design</GhostButton>
+              <Badge size="sm">design</Badge>
             </CardFooter>
           </Card>
         ),
