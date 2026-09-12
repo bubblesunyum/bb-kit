@@ -66,7 +66,8 @@ export const Sizes: Story = {
 /**
  * Rest, hover, focus and disabled. The forced state is `focus-visible`, never
  * `focus`: asking for `focus` shows nothing, and the natural wrong fix puts a
- * ring on every mouse click.
+ * ring on every mouse click. Hover is forced on the wrapper rather than the
+ * input because the hover fill lives there.
  */
 export const States: Story = {
   render: () => (
@@ -83,7 +84,7 @@ export const States: Story = {
   ),
   parameters: {
     pseudo: {
-      hover: [".state-hover input"],
+      hover: ['.state-hover [data-slot="search-field"]'],
       focusVisible: [".state-focus input"],
     },
   },
@@ -129,7 +130,7 @@ export const AwkwardContent: Story = {
 export const Overridden: Story = {
   render: () => (
     <VStack align="start" gap={4}>
-      <Field className="w-80 [&_input]:rounded-none" initial="square ends" />
+      <Field className="w-80 rounded-none" initial="square ends" />
       <Field className="w-80 [&_[data-slot=search-field-icon]]:hidden" initial="no magnifier" />
     </VStack>
   ),

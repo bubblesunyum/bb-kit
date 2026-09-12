@@ -31,7 +31,8 @@ describe("what a SearchField is", () => {
   test("it is medium without being asked", () => {
     render(<SearchField value="" />)
 
-    expect(screen.getByRole("searchbox")).toHaveClass("h-10")
+    // The height is the wrapper's: it owns the box, the input fills it.
+    expect(screen.getByRole("searchbox").closest('[data-slot="search-field"]')).toHaveClass("h-10")
   })
 
   test("every part carries a data-slot", () => {
@@ -194,9 +195,16 @@ describe("the three sizes", () => {
       </>,
     )
 
-    expect(screen.getByRole("searchbox", { name: "sm" })).toHaveClass("h-8")
-    expect(screen.getByRole("searchbox", { name: "md" })).toHaveClass("h-10")
-    expect(screen.getByRole("searchbox", { name: "lg" })).toHaveClass("h-12")
+    // The height is the wrapper's: it owns the box, the input fills it.
+    for (const [name, height] of [
+      ["sm", "h-8"],
+      ["md", "h-10"],
+      ["lg", "h-12"],
+    ] as const) {
+      expect(
+        screen.getByRole("searchbox", { name }).closest('[data-slot="search-field"]'),
+      ).toHaveClass(height)
+    }
   })
 
   // The clear button is the square at the end of the field, so its width has to
@@ -221,32 +229,41 @@ describe("the three sizes", () => {
 
 describe("it answers a pointer", () => {
   // Without a hover fill, rest and hover are indistinguishable — the one thing
-  // the states story is there to catch.
+  // the states story is there to catch. The fill lives on the wrapper rather
+  // than the input because the input's fade mask would punch through it.
   test("hovering fills it the way Badge and GhostButton fill", () => {
-    render(<SearchField value="" />)
+    const { container } = render(<SearchField value="" />)
 
-    expect(screen.getByRole("searchbox")).toHaveClass("hover:bg-muted")
+    const field = container.querySelector('[data-slot="search-field"]')
+    expect(field).toHaveClass("hover:bg-muted")
+    expect(screen.getByRole("searchbox").className).not.toContain("bg-muted")
   })
 
   test("a disabled field takes no pointer events, so it cannot hover", () => {
-    render(<SearchField value="" disabled />)
+    const { container } = render(<SearchField value="" disabled />)
 
-    expect(screen.getByRole("searchbox")).toHaveClass("disabled:pointer-events-none")
+    expect(container.querySelector('[data-slot="search-field"]')).toHaveClass("pointer-events-none")
   })
 })
 
 describe("focus and overriding", () => {
   // :focus would put a ring on every mouse click.
   test("the ring is on focus-visible and never on focus", () => {
-    render(<SearchField value="design" />)
+    const { container } = render(<SearchField value="design" />)
 
-    for (const element of [
-      screen.getByRole("searchbox"),
-      screen.getByRole("button", { name: "Clear search" }),
-    ]) {
-      expect(element.className).toContain("focus-visible:outline-focus-ring")
-      expect(element.className).not.toMatch(/(^|\s)focus:/)
-    }
+    // The input wears the fade mask, which would hide a ring drawn on it, so
+    // the field's ring lives on the wrapper and follows the input's state.
+    const field = container.querySelector('[data-slot="search-field"]')
+    expect(field?.className).toContain("has-[input:focus-visible]:outline-focus-ring")
+    expect(field?.className).not.toMatch(/(^|\s)focus:/)
+    expect(screen.getByRole("searchbox").className).not.toContain("outline-focus-ring")
+    // The ring follows the wrapper's own rounding, so it hugs the field
+    // instead of drawing square corners around a round box.
+    expect(field).toHaveClass("rounded-lg")
+
+    const clear = screen.getByRole("button", { name: "Clear search" })
+    expect(clear.className).toContain("focus-visible:outline-focus-ring")
+    expect(clear.className).not.toMatch(/(^|\s)focus:/)
   })
 
   test("className sizes the field's box", () => {
@@ -270,7 +287,14 @@ describe("awkward content", () => {
 
     const field = screen.getByRole("searchbox")
     expect(field).toHaveValue(AWKWARD.unbreakableWord)
-    expect(field).toHaveClass("w-full", "h-10")
+    expect(field).toHaveClass("w-full", "h-full")
+    expect(field.closest('[data-slot="search-field"]')).toHaveClass("h-10")
+  })
+
+  test("an overflowing value fades toward the clear button instead of slicing", () => {
+    render(<SearchField value={AWKWARD.unbreakableWord} />)
+
+    expect(screen.getByRole("searchbox").className).toContain("mask-image")
   })
 })
 
