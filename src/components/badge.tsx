@@ -47,7 +47,7 @@ export function Badge({
         /* pointer-events-none is the one thing that also stops hover and press
            firing on a badge that cannot be pressed. */
         "disabled:pointer-events-none disabled:text-disabled-text",
-        "transition-[background-color,color,border-color,transform] duration-120 ease-standard",
+        "transition-[background-color,color,border-color,opacity,transform] duration-120 ease-standard",
         "active:scale-[0.97] motion-reduce:active:scale-100",
         "[&_svg]:size-[0.95em] [&_svg]:shrink-0",
         classFor(SIZES, size, "Badge's size"),

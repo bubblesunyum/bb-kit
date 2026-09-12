@@ -52,9 +52,20 @@
    every mode. Tailwind's own utilities inline the raw token and are fine. */
 @utility pressable {
   &:hover {
+    /* Fallback for browsers without color-mix (baseline 2023): the compiled
+       color-mix below degrades to the resting fill exactly, so hover and press
+       would give no feedback at all. Opacity always moves, which is what the
+       old utility did — kept here only behind the negated supports check, so
+       modern browsers never pay its background-dependent mixing. */
+    @supports not (color: color-mix(in lab, red, red)) {
+      opacity: 0.9;
+    }
     background-color: color-mix(in srgb, var(--pressable-fill, var(--card)) 80%, var(--text));
   }
   &:active {
+    @supports not (color: color-mix(in lab, red, red)) {
+      opacity: 0.8;
+    }
     background-color: color-mix(in srgb, var(--pressable-fill, var(--card)) 60%, var(--text));
   }
 }

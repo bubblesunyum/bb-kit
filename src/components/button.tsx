@@ -35,7 +35,7 @@ export function Button({ variant = "primary", size = "md", className, ...props }
            thing that also stops the hover and press styles from firing on a
            button that cannot be pressed. */
         "disabled:pointer-events-none disabled:text-disabled-text",
-        "transition-[background-color,color,transform] duration-120 ease-standard",
+        "transition-[background-color,color,opacity,transform] duration-120 ease-standard",
         "active:scale-[0.98] motion-reduce:active:scale-100",
         "[&_svg]:size-4 [&_svg]:shrink-0",
         classFor(SIZES, size, "Button's size"),
