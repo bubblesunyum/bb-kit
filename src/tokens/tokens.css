@@ -28,11 +28,11 @@
   --page: light-dark(#371C15, #F5E4DF);
   --card: light-dark(#4F2E26, #FEFBFA);
   --text: light-dark(#FDF2F0, #29140F);
-  --quiet: light-dark(#C3ABA4, #5F4741);
+  --quiet: light-dark(#E7D1C6, #5F4741);
   --muted: light-dark(#220D08, #E4CBC4);
   --primary: light-dark(#FFC0AF, #812E19);
   --text-on-primary: light-dark(#2E110A, #FEF7F5);
-  --highlight: light-dark(#5F362B, #F6AF9D);
+  --highlight: light-dark(#7C4C3B, #F6AF9D);
   --text-on-highlight: light-dark(#FCEEEB, #522C22);
   --border: light-dark(#7B5A52, #C4AAA4);
   --input-border: light-dark(#AE9089, #5F4741);

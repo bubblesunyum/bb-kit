@@ -40,6 +40,7 @@ export function checkEveryPalette(): Check[] {
  * bytes, so this is a plain per-channel average of the parsed values — no
  * linearisation, unlike luminance() below. It has to stay in step with the
  * `pressable` utility in globals.css: if the percentages there move, MIX moves.
+ * Exported for the test that enforces it — comments alone let the two drift.
  */
 function shade(fill: string, text: string, state: PressableState): string {
   const weight = MIX[state]
@@ -81,7 +82,7 @@ type Fill = Role | { role: Role; state: PressableState }
 type PressableState = "hover" | "press"
 
 /** The percentages in globals.css's `pressable` utility. */
-const MIX = { hover: 0.8, press: 0.6 } as const
+export const MIX = { hover: 0.8, press: 0.6 } as const
 
 const hover = (role: Role): Fill => ({ role, state: "hover" })
 const press = (role: Role): Fill => ({ role, state: "press" })
@@ -133,7 +134,10 @@ const CHECKS: readonly [Role, Fill, number][] = [
   ["border", "card", 1.4],
   ["border", "muted", 1.25],
   ["highlight", "page", 1.15],
-  ["highlight", "card", 1.15],
+  // Card carries the higher floor: it is the surface a hovered row sits on
+  // (LINK_HOST paints highlight over card), so this row means "the hover
+  // reads" — 1.15 once blessed a 1.17 hover no eye could see (bbk-42y).
+  ["highlight", "card", 1.5],
   ["highlight", "muted", 1.15],
   ["card", "page", 1.15],
   ["disabled-text", "disabled-surface", 2.0],
