@@ -14,7 +14,9 @@ import { VStack } from "./stack"
  *
  * `renderItem` returns the *contents* of a row, not the row element: `List`
  * wraps each one in a `ListItem`, so every row is a real `<li>` and the gap is
- * applied in one place.
+ * applied in one place. There is deliberately no raised form — a list of
+ * raised rows reads as a stack of cards, so compose `CardListItem` over a
+ * `<ul>` by hand for that, the way the `ListItem` stories do.
  *
  * **It never truncates.** The old kit's list silently rendered the first three
  * items and dropped the rest, and its loading state returned early, taking the
