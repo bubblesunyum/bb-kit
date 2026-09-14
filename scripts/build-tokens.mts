@@ -24,8 +24,16 @@ function paletteRule(name: string): string {
   // The default palette also answers to bare :root, so a page that never sets
   // data-theme still has every token rather than none.
   const selector = name === DEFAULT_PALETTE ? `:root,\n[data-theme="${name}"]` : `[data-theme="${name}"]`
+  // Raw per-mode values, never a light-dark() — a light-dark() here resolves
+  // against the color-scheme where it is specified and inherits frozen, so a
+  // mode-only island would wear its parent's mode (bbk-0oo). Consumers pick a
+  // side with light-dark(var(--role-light), var(--role-dark)) in a declaration
+  // on the element itself, which is the only place the island's own mode holds.
   const palette = palettes[name as keyof typeof palettes]
-  const lines = ROLES.map((role) => `  --${role}: light-dark(${palette[role].light}, ${palette[role].dark});`)
+  const lines = ROLES.flatMap((role) => [
+    `  --${role}-light: ${palette[role].light};`,
+    `  --${role}-dark: ${palette[role].dark};`,
+  ])
 
   return `\n${selector} {\n${lines.join("\n")}\n}`
 }

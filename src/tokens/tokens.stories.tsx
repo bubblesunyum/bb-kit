@@ -34,8 +34,9 @@ function Swatches() {
           <span
             className="border-border size-8 border"
             // The one place a raw variable belongs: the subject of the story is
-            // the role itself, so it has to be addressed by name.
-            style={{ background: `var(--${role})` }}
+            // the role itself, so it has to be addressed by name — picked
+            // per-element, because a bare var(--role) inherits frozen (bbk-0oo).
+            style={{ background: `light-dark(var(--${role}-light), var(--${role}-dark))` }}
           />
           <code>{role}</code>
         </div>

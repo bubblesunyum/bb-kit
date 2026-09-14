@@ -28,6 +28,25 @@
   --shadow-color-md: light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.6));
 }
 
+/* Shadows are palette-independent, so unlike the roles they can restate raw
+   values per mode. Without this they freeze at :root to the OS preference —
+   the same bbk-0oo freezing, one layer down. Any element carrying data-mode,
+   cell or island, re-resolves them on itself. */
+[data-mode="light"] {
+  --shadow-color-xs: rgb(0 0 0 / 0.06);
+  --shadow-color-sm: rgb(0 0 0 / 0.08);
+  --shadow-color-md: rgb(0 0 0 / 0.1);
+}
+
+/* .dark rides along: it is a supported mode signal (tokens.css, and the custom
+   variant above for dropped-in shadcn), so it must restate the shadows too. */
+[data-mode="dark"],
+.dark {
+  --shadow-color-xs: rgb(0 0 0 / 0.4);
+  --shadow-color-sm: rgb(0 0 0 / 0.5);
+  --shadow-color-md: rgb(0 0 0 / 0.6);
+}
+
 /* Hover and press shade the fill instead of fading it out. Opacity mixes a
    control with whatever sits behind it, so the same `/90` gained contrast on a
    light page and lost it on a dark one — a pressed danger button measured 3.98
@@ -40,12 +59,14 @@
    in contrast.test.ts reads them out of this file — moving one side without
    the other fails the suite.
 
-   Set --pressable-fill to the same role the background paints. The var()
-   falls back to --card so a caller who copies the class and forgets it still
-   gets a fill that shades: an unset custom property is invalid at
-   computed-value time, which resolves to transparent, so the background would
-   vanish on hover rather than darken. Name the tokens as `--text` /
-   `--primary`, never the `--color-*` aliases. Under
+   Set --pressable-fill to the same role the background paints, as a
+   light-dark() over its raw values — a bare var(--role) would inherit the
+   nearest specification's frozen mode (bbk-0oo). The var()
+   falls back to the card expression so a caller who copies the class and
+   forgets it still gets a fill that shades: an unset custom property is
+   invalid at computed-value time, which resolves to transparent, so the
+   background would vanish on hover rather than darken. Name the tokens as
+   `--text-light` / `--primary-dark`, never the `--color-*` aliases. Under
    `@theme inline` the aliases are not emitted per theme: they land once on
    :root, where light-dark() has already resolved against :root's own
    color-scheme, so hand-written CSS reading them gets light-mode colour in
@@ -60,57 +81,62 @@
     @supports not (color: color-mix(in lab, red, red)) {
       opacity: 0.9;
     }
-    background-color: color-mix(in srgb, var(--pressable-fill, var(--card)) 80%, var(--text));
+    background-color: color-mix(in srgb, var(--pressable-fill, light-dark(var(--card-light), var(--card-dark))) 80%, light-dark(var(--text-light), var(--text-dark)));
   }
   &:active {
     @supports not (color: color-mix(in lab, red, red)) {
       opacity: 0.8;
     }
-    background-color: color-mix(in srgb, var(--pressable-fill, var(--card)) 60%, var(--text));
+    background-color: color-mix(in srgb, var(--pressable-fill, light-dark(var(--card-light), var(--card-dark))) 60%, light-dark(var(--text-light), var(--text-dark)));
   }
 }
 
 /* `inline` is load-bearing. Without it Tailwind resolves these at build time and
-   hardcodes whatever the value was, so theme switching does nothing — silently. */
+   hardcodes whatever the value was, so theme switching does nothing — silently.
+   Inlined verbatim, the light-dark() below lands in every utility on the
+   element itself, where it resolves against that element's own color-scheme.
+   That is what makes a mode-only island work: tokens.css holds only raw
+   per-mode values, because a light-dark() there would resolve where specified
+   and inherit frozen (bbk-0oo). Never point one of these at a bare --role. */
 @theme inline {
-  --color-page: var(--page);
-  --color-card: var(--card);
-  --color-text: var(--text);
-  --color-quiet: var(--quiet);
-  --color-muted: var(--muted);
-  --color-primary: var(--primary);
-  --color-text-on-primary: var(--text-on-primary);
-  --color-highlight: var(--highlight);
-  --color-text-on-highlight: var(--text-on-highlight);
-  --color-border: var(--border);
-  --color-input-border: var(--input-border);
-  --color-focus-ring: var(--focus-ring);
-  --color-disabled-surface: var(--disabled-surface);
-  --color-disabled-text: var(--disabled-text);
-  --color-danger: var(--danger);
-  --color-danger-surface: var(--danger-surface);
-  --color-text-on-danger: var(--text-on-danger);
+  --color-page: light-dark(var(--page-light), var(--page-dark));
+  --color-card: light-dark(var(--card-light), var(--card-dark));
+  --color-text: light-dark(var(--text-light), var(--text-dark));
+  --color-quiet: light-dark(var(--quiet-light), var(--quiet-dark));
+  --color-muted: light-dark(var(--muted-light), var(--muted-dark));
+  --color-primary: light-dark(var(--primary-light), var(--primary-dark));
+  --color-text-on-primary: light-dark(var(--text-on-primary-light), var(--text-on-primary-dark));
+  --color-highlight: light-dark(var(--highlight-light), var(--highlight-dark));
+  --color-text-on-highlight: light-dark(var(--text-on-highlight-light), var(--text-on-highlight-dark));
+  --color-border: light-dark(var(--border-light), var(--border-dark));
+  --color-input-border: light-dark(var(--input-border-light), var(--input-border-dark));
+  --color-focus-ring: light-dark(var(--focus-ring-light), var(--focus-ring-dark));
+  --color-disabled-surface: light-dark(var(--disabled-surface-light), var(--disabled-surface-dark));
+  --color-disabled-text: light-dark(var(--disabled-text-light), var(--disabled-text-dark));
+  --color-danger: light-dark(var(--danger-light), var(--danger-dark));
+  --color-danger-surface: light-dark(var(--danger-surface-light), var(--danger-surface-dark));
+  --color-text-on-danger: light-dark(var(--text-on-danger-light), var(--text-on-danger-dark));
 
   /* Aliases so a dropped-in shadcn component finds the names it expects. They
      must be spelled --color-*: a bare `--background: var(--page)` generates no
      utility and reports nothing. secondary is the muted pair, popover is card,
      accent is highlight, destructive is the danger surface — shadcn's destructive
      is always a fill, never ink. */
-  --color-background: var(--page);
-  --color-foreground: var(--text);
-  --color-card-foreground: var(--text);
-  --color-popover: var(--card);
-  --color-popover-foreground: var(--text);
-  --color-primary-foreground: var(--text-on-primary);
-  --color-secondary: var(--muted);
-  --color-secondary-foreground: var(--text);
-  --color-muted-foreground: var(--quiet);
-  --color-accent: var(--highlight);
-  --color-accent-foreground: var(--text-on-highlight);
-  --color-destructive: var(--danger-surface);
-  --color-destructive-foreground: var(--text-on-danger);
-  --color-input: var(--input-border);
-  --color-ring: var(--focus-ring);
+  --color-background: light-dark(var(--page-light), var(--page-dark));
+  --color-foreground: light-dark(var(--text-light), var(--text-dark));
+  --color-card-foreground: light-dark(var(--text-light), var(--text-dark));
+  --color-popover: light-dark(var(--card-light), var(--card-dark));
+  --color-popover-foreground: light-dark(var(--text-light), var(--text-dark));
+  --color-primary-foreground: light-dark(var(--text-on-primary-light), var(--text-on-primary-dark));
+  --color-secondary: light-dark(var(--muted-light), var(--muted-dark));
+  --color-secondary-foreground: light-dark(var(--text-light), var(--text-dark));
+  --color-muted-foreground: light-dark(var(--quiet-light), var(--quiet-dark));
+  --color-accent: light-dark(var(--highlight-light), var(--highlight-dark));
+  --color-accent-foreground: light-dark(var(--text-on-highlight-light), var(--text-on-highlight-dark));
+  --color-destructive: light-dark(var(--danger-surface-light), var(--danger-surface-dark));
+  --color-destructive-foreground: light-dark(var(--text-on-danger-light), var(--text-on-danger-dark));
+  --color-input: light-dark(var(--input-border-light), var(--input-border-dark));
+  --color-ring: light-dark(var(--focus-ring-light), var(--focus-ring-dark));
 
   /* The one easing, from §5.6. Durations are bare numbers of milliseconds in
      Tailwind v4 — duration-120 and duration-200 — so only this needs a name. */
@@ -143,12 +169,12 @@
   *,
   ::before,
   ::after {
-    border-color: var(--border);
+    border-color: light-dark(var(--border-light), var(--border-dark));
   }
 
   body {
-    background: var(--page);
-    color: var(--text);
+    background: light-dark(var(--page-light), var(--page-dark));
+    color: light-dark(var(--text-light), var(--text-dark));
   }
 
   html {

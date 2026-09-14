@@ -93,7 +93,7 @@ const SIZES = {
 // shades the fill toward the page's text colour rather than fading it out; see
 // the comment on the utility in globals.css for why opacity was wrong.
 const PRIMARY =
-  "bg-primary text-text-on-primary pressable [--pressable-fill:var(--primary)] disabled:bg-disabled-surface"
+  "bg-primary text-text-on-primary pressable [--pressable-fill:light-dark(var(--primary-light),var(--primary-dark))] disabled:bg-disabled-surface"
 
 const VARIANTS = {
   primary: PRIMARY,
@@ -102,5 +102,5 @@ const VARIANTS = {
   ghost: "text-text hover:bg-muted",
   link: "text-primary underline-offset-4 hover:underline",
   danger:
-    "bg-danger-surface text-text-on-danger pressable [--pressable-fill:var(--danger-surface)] disabled:bg-disabled-surface",
+    "bg-danger-surface text-text-on-danger pressable [--pressable-fill:light-dark(var(--danger-surface-light),var(--danger-surface-dark))] disabled:bg-disabled-surface",
 } as const
