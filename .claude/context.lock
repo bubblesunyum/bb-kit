@@ -24,7 +24,7 @@
     "scripts/shoot.mjs": "a43dee3d14f605f2"
   },
   ".claude/skills/handoff/SKILL.md": {
-    "doc": "b0b18c0cc2084e19",
+    "doc": "25a7cfa571089e5d",
     "scripts/brief.sh": "bcbedff2c42c44ad"
   },
   ".claude/skills/workflow/SKILL.md": {
@@ -32,7 +32,7 @@
     "\u2026": ""
   },
   "AGENTS.md": {
-    "doc": "51174e92f85cf3b7",
+    "doc": "3e9652629d84d130",
     "scripts/brief.sh": "bcbedff2c42c44ad",
     "scripts/review.sh": "9f5a8bf175814430",
     "scripts/verify.sh": "73190e2941aa8e8f"
